@@ -16,7 +16,7 @@
 - [/] Step 2: Self-Consistent Field (SCF)
     - [x] Update coordinates from `vc-relax`
     - [x] Create input file `wte2.scf.in`
-    - [/] Run `scf` calculation - **IN PROGRESS (God Mode: 60/720)**
+    - [/] Run `scf` calculation - **IN PROGRESS (High-Performance: 60/720)**
 - [/] Step 3: Parity Analysis (The Z2 Check)
     - [x] Create input file `wte2.bands.in` (4 TRIM points)
     - [x] Run `bands` calculation - **SUCCESS**

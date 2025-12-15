@@ -1,10 +1,10 @@
-# 1T'-WTe₂ Topology: A Quantum ESPRESSO & Wannier90 Recipe
+# 1T'-WTe₂ Topology: A Quantum ESPRESSO & Wannier90 Computational Pipeline
 
 ![Status](https://img.shields.io/badge/Status-Verified-green) ![Physics](https://img.shields.io/badge/Physics-Topological_Insulator-blue) ![Method](https://img.shields.io/badge/Method-DFT%2BQSGW-orange)
 
 **Author:** Shahriar Pollob  
 **Supervisor:** M. Shahnoor Rahman  
-**Institution:** [Your Department/University]
+
 
 ---
 
@@ -12,20 +12,21 @@
 This repository hosts a complete, reproducible computational workflow for characterizing the **Z₂ topological invariant** of monolayer 1T'-WTe₂. Using **Quantum ESPRESSO** (DFT) and **Wannier90** (Tight-Binding), we demonstrate the existence of the Quantum Spin Hall (QSH) state despite the semimetallic nature of the PBE ground state.
 
 **Key Goals:**
-1.  **Reproducibility:** A "God Mode" script that goes from raw SCF to Topological Invariant.
+1.  **Reproducibility:** A "High-Performance Workflow" script that goes from raw SCF to Topological Invariant.
 2.  **Robustness:** Validation via orbital projections, spread convergence, and DFT-Wannier band overlays.
 3.  **Topological Proof:** Verification via **Spin Hall Conductivity (SHC)** and **Ribbon Edge States**.
 
 ---
 
-## 🏆 Key Results (The "Smoking Gun")
+## 🎯 Key Results: Topological Characterization (The "Definitive Evidence")
 
-### 1. Quantized Spin Hall Conductivity ($Z_2 = 1$)
-Calculated via the Kubo formula. The non-zero plateau at the Fermi level confirms the topological phase.
+### 1. Quantized Spin Hall Conductivity (Topological Invariant)
+The calculation of the intrinsic Spin Hall Conductivity ($\sigma_{xy}^{spin}$) reveals a quantized non-zero plateau within the bulk band gap. This is the distinct transport signature of the Quantum Spin Hall (QSH) phase ($Z_2 = 1$). 
+
 ![SHC Plot](figures/Fig2_SHC_Final.png)
 
 ### 2. Topological Edge States (Bulk-Boundary Correspondence)
-Calculated on a 30-unit-cell ribbon. The red crossing lines represent helical edge states traversing the bulk gap.
+To verify the bulk topology, we constructed a slab Hamiltonian for a 30-unit-cell ribbon. The energy spectrum explicitly shows gapless helical edge states (red) connecting the valence and conduction manifolds, confirming the non-trivial topology.
 ![Ribbon Plot](figures/Fig_Ribbon_EdgeStates.png)
 
 ---

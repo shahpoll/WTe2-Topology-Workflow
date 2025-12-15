@@ -1,6 +1,6 @@
 # Infrastructure Feasibility: The Memory Bottleneck
 
-| Resource | Standard Node (16GB) | JARVIS GPU Node (God Mode) |
+| Resource | Standard Node (16GB) | JARVIS GPU Node (High-Mem) |
 | :--- | :--- | :--- |
 | **CPU Cores** | 12 Cores | 40+ Cores |
 | **RAM Available** | 16 GB | 64+ GB |

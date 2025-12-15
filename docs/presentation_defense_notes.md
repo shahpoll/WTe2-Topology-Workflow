@@ -25,7 +25,7 @@
 - **Theoretical Anchor:** "Results are consistent with the original prediction by Qian et al. (Science 2014) regarding the $d$-$p$ band inversion in 1T'-TMDCs."
 - **Gap Magnitude:** "While ARPES experiments (e.g., Tang et al. Nature Phys 2017) report a global gap of $\approx 55$ meV, our PBE calculation yields a semimetallic ground state. This is a known limitation of the GGA functional. However, the Topological Invariant ($Z_2$) is robust because the direct gap at the inversion point remains open and inverted."
 
-## 4. Final "God Mode" Summary
+## 4. Final "Production-Scale" Summary
 **Strategy:** Defend against every angle for a bulletproof conclusion.
 - **"Did you run it?"** $\rightarrow$ Workflow Chart with Scripts.
 - **"Is it converged?"** $\rightarrow$ Spread Plot.
