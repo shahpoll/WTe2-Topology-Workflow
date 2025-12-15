@@ -91,12 +91,9 @@ To visualize the boundary physics, we constructed a tight-binding Hamiltonian fo
 = Validation & Reproducibility
 To ensure numerical robustness, we verified the convergence of the Wannier minimization. The total spread converged to $< 30 \AA^2$, indicating well-localized functions.
 
-#grid(
-  columns: (1fr, 1fr),
-  gutter: 15pt,
-  figure(image("figures/Fig_Credibility_Spreads.png", width: 100%), caption: [Spread Convergence]),
-  figure(image("figures/validation_dft_vs_wannier.png", width: 100%), caption: [DFT vs Wannier Overlay])
-)
+#figure(image("figures/Fig_Credibility_Spreads.png", width: 85%), caption: [Spread Convergence])
+
+#figure(image("figures/validation_dft_vs_wannier.png", width: 85%), caption: [DFT vs Wannier Overlay])
 
 = Reproducibility Pipeline
 The entire workflow is automated via the scripts provided in the attached repository.
