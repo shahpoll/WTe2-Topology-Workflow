@@ -15,6 +15,12 @@
   fill: text-color
 )
 
+// Apply math color
+#show math.equation: set text(fill: math-color)
+
+// Define missing symbols
+#let hbar = math.planck.reduce
+
 // --- SLIDE FUNCTION ---
 #let slide(title: none, body) = {
   if title != none {
@@ -118,7 +124,7 @@
     align(horizon)[
       *The Result:*
       - A quantized plateau appears in the bulk gap.
-      - Value: $sigma_(xy) approx 2 e^2\/h$ (Conductance Quantum).
+      - Value: $sigma_(xy) approx 2 e^2 / h$ (Conductance Quantum).
       
       *Implication:*
       This non-zero invariant confirms the *Quantum Spin Hall* state ($Z_2 = 1$).
