@@ -1,6 +1,6 @@
-# Step-by-Step Tutorial
+# Computational Execution Protocol
 
-This guide walks you through the reproduction of the Z2 invariant.
+This document details the step-by-step procedure for reproducing the topological invariant calculation. The workflow proceeds from the Density Functional Theory (DFT) ground state to the Wannierized tight-binding model.
 
 ## Step 1: Self-Consistent Field (SCF)
 Run the ground state calculation to converge the charge density.

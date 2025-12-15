@@ -1,20 +1,19 @@
 # 1T'-WTe₂ Topology: A Quantum ESPRESSO & Wannier90 Computational Pipeline
 
-![Status](https://img.shields.io/badge/Status-Verified-green) ![Physics](https://img.shields.io/badge/Physics-Topological_Insulator-blue) ![Method](https://img.shields.io/badge/Method-DFT%2BQSGW-orange)
+![Status](https://img.shields.io/badge/Status-Verified-green) ![Physics](https://img.shields.io/badge/Physics-Topological_Insulator-blue) ![Method](https://img.shields.io/badge/Method-Ab_Initio-orange)
 
 **Author:** Shahriar Pollob  
 **Supervisor:** M. Shahnoor Rahman  
 
-
 ---
 
-## 📖 Overview
-This repository hosts a complete, reproducible computational workflow for characterizing the **Z₂ topological invariant** of monolayer 1T'-WTe₂. Using **Quantum ESPRESSO** (DFT) and **Wannier90** (Tight-Binding), we demonstrate the existence of the Quantum Spin Hall (QSH) state despite the semimetallic nature of the PBE ground state.
+## 📖 Abstract
+This repository hosts a robust ab initio framework for the topological characterization of monolayer 1T'-WTe₂. Utilizing **Quantum ESPRESSO** (Density Functional Theory) and **Wannier90** (Maximally Localized Wannier Functions), we establish the existence of the Quantum Spin Hall (QSH) phase. Despite the semimetallic ground state of the PBE functional, the underlying topological invariant ($Z_2=1$) is preserved and rigorously verified.
 
-**Key Goals:**
-1.  **Reproducibility:** A "High-Performance Workflow" script that goes from raw SCF to Topological Invariant.
-2.  **Robustness:** Validation via orbital projections, spread convergence, and DFT-Wannier band overlays.
-3.  **Topological Proof:** Verification via **Spin Hall Conductivity (SHC)** and **Ribbon Edge States**.
+**Objectives:**
+1.  **Reproducibility:** A fully automated high-performance workflow from self-consistency to topological invariant.
+2.  **Verification:** Validated via orbital projection analysis, spread minimization, and band interpolation accuracy.
+3.  **Characterization:** Confirmation via intrinsic **Spin Hall Conductivity (SHC)** and explicit **Helical Edge States**.
 
 ---
 

@@ -1,7 +1,6 @@
-# Validation & Quality Control
+# Numerical Verification & Stability Analysis
 
-## 1. Wannier Quality (The "Trust" Check)
-We achieved excellent localization for the requested bands.
+Ensuring the fidelity of the topological characterization requires rigorous validation of the interpolated electronic structure. This section documents the convergence checks and basis set accuracy.
 ![Spreads](../artifacts/Fig_Credibility_Spreads.png)
 *Fig 1: Wannier Spread Convergence (< 30 Ang^2).*
 
