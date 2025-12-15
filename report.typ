@@ -33,12 +33,7 @@ We present a complete computational characterization of the Quantum Spin Hall (Q
 = Introduction: The Topological Mechanism
 Monolayer Tungsten Ditelluride (1T'-WTe#sub[2]) is a transition metal dichalcogenide that exhibits a Quantum Spin Hall (QSH) state. Unlike the semiconducting 2H phase, the 1T' phase is structurally distorted (Peierls distortion), leading to a band inversion between the Tungsten $d$-orbitals and Tellurium $p$-orbitals.
 
-#grid(
-  columns: (1fr, 1fr),
-  gutter: 15pt,
-  figure(image("figures/Fig_Structure_Views_V2.png", width: 100%), caption: [Crystal Structure (Distorted 1T')]),
-  figure(image("figures/Fig_PDOS_Inversion.png", width: 100%), caption: [Orbital Inversion at $E_F$])
-)
+
 
 As shown in Figure 2, the W-$d$ states (blue) dip below the Te-$p$ states (orange) near the Fermi level. This orbital inversion, combined with strong Spin-Orbit Coupling (SOC), opens a fundamental gap characteristic of the $Z_2=1$ topological phase.
 
