@@ -58,19 +58,27 @@ ax.axhline(0, color='red', linestyle='--', linewidth=1, label='Fermi Level')
 k_max = bands[0][-1,0]
 # Approximate locations for standard 4-segment path
 ticks = [0, k_max * 0.25, k_max * 0.5, k_max * 0.75, k_max]
-labels = [r'$\Gamma$', 'X', 'M', r'$\Gamma$', 'Y']
+labels = [r'$\mathbf{\Gamma}$', r'$\mathbf{X}$', r'$\mathbf{M}$', r'$\mathbf{\Gamma}$', r'$\mathbf{Y}$']
 ax.set_xticks(ticks)
-ax.set_xticklabels(labels, fontsize=12)
+ax.set_xticklabels(labels, fontsize=18)
+ax.tick_params(axis='both', which='major', labelsize=16, width=2, length=6)
 
 # 4. Highlight the Inversion (The "Open" Gap)
 # We expect the gap near Gamma (first and fourth tick)
-# Draw a circle or arrow if you want, but clean lines are usually best.
-ax.text(0.05, 0.1, "Inverted Gap", color='blue', fontsize=10, fontweight='bold')
+ax.text(0.05, 0.15, "Inverted Gap", color='blue', fontsize=16, fontweight='bold')
 
-ax.set_ylabel("Energy (eV)", fontsize=12)
-ax.set_title("1T'-WTe2 Band Structure (PBE+SOC)", fontsize=14)
-ax.grid(True, which='major', linestyle='-', alpha=0.1)
+ax.set_ylabel("Energy (eV)", fontsize=18, fontweight='bold')
+ax.set_title("1T'-WTe2 Band Structure (PBE+SOC)", fontsize=20, fontweight='bold', pad=20)
+ax.grid(True, which='major', linestyle='-', alpha=0.15, linewidth=1.5)
+
+# Thicker borders
+for spine in ax.spines.values():
+    spine.set_linewidth(2)
+
+import os
+script_dir = os.path.dirname(os.path.abspath(__file__))
+output_path = os.path.join(script_dir, "../figures/Fig1_BandStructure_Final.png")
 
 plt.tight_layout()
-plt.savefig("wte2_bands_professional.png", dpi=300)
-print("Saved professional plot as wte2_bands_professional.png")
+plt.savefig(output_path, dpi=300)
+print(f"Saved professional plot as {output_path}")

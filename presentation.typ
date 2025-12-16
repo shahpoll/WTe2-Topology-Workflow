@@ -119,9 +119,9 @@
     [
        #card[
          *Key Ingredients:*
-         - *Engine:* Quantum ESPRESSO (`pw.x`)
-         - *Functional:* PBE + Fully Relativistic PAW
-         - *Basis:* Maximally Localized Wannier Functions (Wannier90)
+         - *Engine:* Quantum ESPRESSO (`pw.x`) v7.4.1
+         - *Pseudopotentials:* `pslibrary` v1.0.0 (PAW, Fully Relativistic PBE)
+         - *Wannier90:* Spinor Projections ($p$-Te, $d$-W) + Disentanglement
          
          *Goal:* \
          Generate an accurate Tight-Binding model for Berry Curvature integration.
@@ -297,6 +297,9 @@
       #align(center)[
         *Code & Data:* \
         github.com/shahpoll/Quantum-ESPRESSO-WTe2-Topology
+        
+        *Release:* \
+        `v1.0-ICAP2025` (Verified Artifact)
       ]
     ],
     align(center)[
