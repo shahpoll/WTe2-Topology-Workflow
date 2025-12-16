@@ -1,8 +1,9 @@
 // --- THEME CONFIGURATION ---
+// Dark "Developer/Hacker" Aesthetic
 #let bg-color = rgb("#1e1e2e") 
 #let text-color = rgb("#cdd6f4")
-#let accent-color = rgb("#f38ba8") 
-#let math-color = rgb("#89b4fa") // Light Blue for Math
+#let accent-color = rgb("#f38ba8") // Red/Pink
+#let math-color = rgb("#89b4fa")   // Blue
 
 #set page(
   paper: "presentation-16-9",
@@ -18,10 +19,10 @@
 // Apply math color
 #show math.equation: set text(fill: math-color)
 
-// --- SLIDE FUNCTION ---
+// --- SLIDE TEMPLATE ---
 #let slide(title: none, body) = {
   if title != none {
-    text(28pt, weight: "bold", fill: accent-color)[#title]
+    text(26pt, weight: "bold", fill: accent-color)[#title]
     v(0.2em)
     line(length: 100%, stroke: 2pt + text-color)
     v(0.8em)
@@ -30,9 +31,9 @@
   pagebreak()
 }
 
-// --- TITLE SLIDE (ICAP 2025) ---
+// --- SLIDE 1: TITLE (OFFICIAL ACCEPTED) ---
 #align(center + horizon)[
-  #text(32pt, weight: "bold", fill: accent-color)[Robust Quantum Spin Hall State in Monolayer 1T'-WTe#sub[2]]
+  #text(26pt, weight: "bold", fill: accent-color)[A Quantum ESPRESSO Recipe for $Z_2$ Invariant of 2D Topological Material 1T'-WTe#sub[2]]
   #v(1em)
   #text(22pt)[*Shahriar Pollob*]
   #v(0.2em)
@@ -40,80 +41,112 @@
   #v(2em)
   #line(length: 60%, stroke: 1pt + text-color)
   #v(0.5em)
-  #text(18pt)[Presented at *ICAP 2025*] \
-  #text(16pt)[International Conference on Advances in Physics] \
-  #text(16pt)[Shahjalal University of Science and Technology (SUST)]
+  #text(18pt)[*ICAP 2025* | SUST] \
+  #text(16pt, fill: text-color.lighten(30%))[International Conference on Advances in Physics]
 ]
 #pagebreak()
 
-// --- SLIDE 2: THE CONCEPT (For General Audience) ---
-#slide(title: "What is a Topological Insulator?")[
-  Standard insulators have a global energy gap. *Topological Insulators (TIs)* are distinct: they are insulating in the bulk but conducting at the edges.
-  
+// --- SLIDE 2: MOTIVATION & CONCEPT ---
+#slide(title: "Motivation: The Reproducibility Gap")[
+  *The Problem:* Obtaining topological invariants ($Z_2$) from standard DFT output is non-trivial and often relies on opaque, black-box tools.
+
+  *Our Goal:* Provide a clear, open-source *"Recipe"* using Quantum ESPRESSO.
+
   #grid(
-    columns: (1.5fr, 1fr),
+    columns: (1fr, 1fr),
     gutter: 20pt,
     [
-      *The Mechanism: Band Inversion*
-      Driven by strong *Spin-Orbit Coupling (SOC)*, the conduction and valence bands swap character (parity).
-      
-      *The Hamiltonian:*
-      $ H = H_0 + underbrace(lambda_("SOC") vec(L) dot vec(S), "Topological Driver") $
-      
-      This inversion creates a non-trivial winding number ($Z_2=1$), necessitating gapless edge states.
+      *Target Material: 1T'-WTe#sub[2]*
+      - *Phase:* Distorted 1T structure (Peierls Instability).
+      - *Mechanism:* SOC-driven Band Inversion ($d-p$ orbitals).
+      - *Result:* Quantum Spin Hall (QSH) Insulator.
     ],
     align(center)[
-      // Placeholder for a concept diagram if you had one, 
-      // otherwise we use the structure to show the material
       #image("figures/Fig_Structure_Views_V2.png", width: 80%)
-      #text(14pt)[1T'-WTe2 Crystal Structure]
+      #text(14pt)[1T'-WTe#sub[2] Crystal Structure]
     ]
   )
 ]
 
-// --- SLIDE 3: METHODOLOGY (The Math) ---
-#slide(title: "Computational Framework")[
-  We characterize the topology using *Density Functional Theory (DFT)* and *Wannier Interpolation*.
+// --- SLIDE 3: THE RECIPE (WORKFLOW) ---
+#slide(title: "The Workflow: DFT to Topology")[
+  We developed a minimally-interfaced pipeline to generate "Topology-Ready" data.
+
+  #align(center)[
+    #image("figures/Fig_Workflow.png", width: 85%)
+  ]
   
-  *1. First-Principles Hamiltonian (DFT):*
-  Solving the Kohn-Sham equations with relativistic pseudopotentials (PBE + SOC):
-  *1. First-Principles Hamiltonian (DFT):*
-  Solving the Kohn-Sham equations with relativistic pseudopotentials (PBE + SOC):
-  $ [ -planck.reduce^2 / (2m) nabla^2 + V_("eff")(vec(r)) ] psi_i = epsilon_i psi_i $
-  
-  *2. Topological Invariant (Kubo Formula):*
-  The Spin Hall Conductivity (SHC) is calculated via the Berry Curvature $Omega_{n}(vec(k))$:
-  
-  $ sigma_("xy")^("spin") = e^2 / planck.reduce sum_n integral_("BZ") (d^2k) / ((2 pi)^2) f_n(vec(k)) Omega_(n,"xy")^("spin")(vec(k)) $
-  
-  *Tools:* Quantum ESPRESSO $arrow$ Wannier90 $arrow$ PostW90
+  *Key Ingredients:*
+  - *QE (pw.x):* Fully Relativistic PBE+SOC ($12 times 6 times 1$ k-mesh).
+  - *Wannier90:* Spinor Projections ($p$-Te, $d$-W) + Disentanglement.
 ]
 
-// --- SLIDE 4: ELECTRONIC STRUCTURE ---
-#slide(title: "Results: Band Inversion")[
-  The 1T' structural distortion induces a semimetallic ground state, but the *direct gap* opens due to SOC.
-  
+// --- SLIDE 4: ELECTRONIC STRUCTURE (DFT) ---
+#slide(title: "Step 1: Relativistic Electronic Structure")[
+  The foundation of the recipe is the accurate capture of the Spin-Orbit Coupling (SOC) effects.
+
   #grid(
     columns: (1fr, 1fr),
     gutter: 10pt,
     align(center)[
       #image("figures/Fig1_BandStructure_Final.png", height: 70%)
-      #v(-0.5em)
-      #text(16pt)[Relativistic Band Structure]
+      #text(16pt)[*Band Structure:* SOC opens the direct gap at $Gamma$.]
     ],
     align(center)[
       #image("figures/Fig_PDOS_Inversion.png", height: 70%)
-      #v(-0.5em)
-      #text(16pt)[Orbital Mixing ($d-p$ Inversion)]
+      #text(16pt)[*PDOS:* Orbital inversion confirm $d-p$ mixing.]
     ]
   )
-  *Observation:* The W-$d$ and Te-$p$ bands invert near $Gamma$, a signature of the QSH phase.
 ]
 
-// --- SLIDE 5: TOPOLOGICAL PROOF (SHC) ---
-#slide(title: "Proof 1: Spin Hall Conductivity")[
-  We calculate the intrinsic SHC using the Kubo-Greenwood formula.
+// --- SLIDE 5: WANNIER QUALITY CONTROL ---
+#slide(title: "Step 2: Wannierization Quality")[
+  *Critique:* Topological claims are invalid if the Tight-Binding model is poor.
+  *Validation:* We ensure strict convergence of the Wannier spreads.
+
+  #grid(
+    columns: (1fr, 1fr),
+    gutter: 20pt,
+    align(center)[
+      #image("figures/Fig_Credibility_Spreads.png", height: 60%)
+      #v(0.5em)
+      *Convergence* \
+      (Total Spread $< 30 Å^2$)
+    ],
+    align(center)[
+      #image("figures/validation_dft_vs_wannier.png", height: 60%)
+      #v(0.5em)
+      *Accuracy* \
+      (Overlay error $< 5$ meV)
+    ]
+  )
+]
+
+// --- SLIDE 6: TOPOLOGICAL DIAGNOSTICS (PIVOT) ---
+#slide(title: "Step 3: Topological Diagnostics")[
+  From the Wannier Hamiltonian, we diagnose the $Z_2$ invariant via the *Bulk-Boundary Correspondence*.
   
+  #grid(
+    columns: (1.5fr, 1fr),
+    gutter: 20pt,
+    align(center)[
+      #image("figures/Fig_Ribbon_EdgeStates.png", width: 90%)
+    ],
+    align(horizon)[
+      *Ribbon Calculation:*
+      - We construct a 30-unit-cell slab.
+      - *Result:* Helical Edge States (Red) traverse the bulk gap.
+      - *Counting Rule:* Odd number of crossings $arrow Z_2 = 1$.
+      
+      This serves as a direct visualization of the Wilson Loop winding.
+    ]
+  )
+]
+
+// --- SLIDE 7: SPIN HALL CONDUCTIVITY ---
+#slide(title: "Complementary Proof: SHC")[
+  We further verify the topological phase by calculating the *Spin Hall Conductivity* (Kubo Formula).
+
   #grid(
     columns: (1.2fr, 1fr),
     gutter: 20pt,
@@ -121,45 +154,28 @@
       #image("figures/Fig2_SHC_Final.png", width: 100%)
     ],
     align(horizon)[
-      *The Result:*
-      - A quantized plateau appears in the bulk gap.
-      - Value: $sigma_("xy") approx 2 e^2 / h$ (Conductance Quantum).
-      
-      *Implication:*
-      This non-zero invariant confirms the *Quantum Spin Hall* state ($Z_2 = 1$).
+      *Quantized Response:*
+      - Plateau at $sigma_("xy") approx 2 e^2 / h$.
+      - Robust against chemical potential shifts.
+      - Confirms the QSH nature of the gap.
     ]
   )
 ]
 
-// --- SLIDE 6: TOPOLOGICAL PROOF (RIBBON) ---
-#slide(title: "Proof 2: Helical Edge States")[
-  *Bulk-Boundary Correspondence:* If the bulk is topological, the boundary must be metallic.
+// --- SLIDE 8: CONCLUSION & RESOURCES ---
+#slide(title: "Takeaways & Resources")[
+  - *Summary:*
+    1.  Established a reproducible *Quantum ESPRESSO Recipe* for 1T'-WTe#sub[2].
+    2.  Verified $Z_2=1$ via Edge States and SHC.
+    3.  Demonstrated robust Wannierization ($< 30 Å^2$ spread).
+
+  - *Open Science:*
+    - The complete "Recipe" (Scripts, Inputs, Data) is available on GitHub.
   
-  #grid(
-    columns: (1fr, 1.5fr),
-    gutter: 20pt,
-    align(horizon)[
-      *Simulation:*
-      - 30-Unit Cell Ribbon.
-      - Constructed from Maximally Localized Wannier Functions.
-      
-      *Observation:*
-      - *Red States:* Gapless modes crossing the Fermi level.
-      - These are the topologically protected edge channels.
-    ],
-    align(center)[
-      #image("figures/Fig_Ribbon_EdgeStates.png", width: 85%)
-    ]
-  )
-]
-
-// --- SLIDE 7: CONCLUSION ---
-#slide(title: "Summary")[
-  - *Conclusion:*
-    - We have robustly characterized monolayer 1T'-WTe#sub[2] as a QSH insulator.
-    - Verified via orbital inversion, quantized SHC, and edge states.
-    - Established a reproducible workflow for topological materials.
-
-  - *Future Work:*
-    - Investigation of strain tuning and electric field effects.
+  #align(center)[
+    #v(1em)
+    #image("figures/Fig_Repo_QR.png", width: 20%)
+    #v(0.5em)
+    #text(16pt)[github.com/shahpoll/Quantum-ESPRESSO-WTe2-Topology]
+  ]
 ]
