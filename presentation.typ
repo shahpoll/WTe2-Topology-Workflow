@@ -123,7 +123,7 @@
     align(horizon)[
       *The Result:*
       - A quantized plateau appears in the bulk gap.
-      - Value: $sigma_(xy) approx 2 e^2 / h$ (Conductance Quantum).
+      - Value: $sigma_("xy") approx 2 e^2 / h$ (Conductance Quantum).
       
       *Implication:*
       This non-zero invariant confirms the *Quantum Spin Hall* state ($Z_2 = 1$).
