@@ -160,7 +160,7 @@
     columns: (1.3fr, 1fr),
     gutter: 20pt,
     align(center)[
-      #image("figures/Fig1_BandStructure_Final.png", width: 100%)
+      #image("figures/Fig_Bands_Presentation.png", width: 100%)
       #text(16pt)[Full Relativistic Band Structure]
     ],
     [
