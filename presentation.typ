@@ -120,6 +120,32 @@
   )
 ]
 
+// --- SLIDE 2c: PHASE COMPARISON ---
+#slide(title: [The Distinction: $1T$ vs $1T#super[#sym.prime]$ Phase])[
+  #grid(
+    columns: (1fr, 30pt, 1fr),
+    align(center + horizon)[
+      #image("figures/Fig_Phase_Comparison.png", width: 140%)
+    ],
+    [], // Spacer
+    [
+      #card[
+        *High Symmetry ($1T$)* \
+        - Isotropic Triangular Lattice.
+        - Metallic or Trivial Insulator.
+        - Unstable in WTe#sub[2].
+      ]
+      #v(20pt)
+      #card[
+        *Distorted ($1T#super[#sym.prime]$)* \
+        - **Peierls Instability:** Spontaneous symmetry breaking.
+        - **Zigzag Chains:** Formation of W-W dimers (Red lines).
+        - **Topology:** This distortion, combined with SOC, inverts the bands.
+      ]
+    ]
+  )
+]
+
 // --- SLIDE 3: MECHANISM ---
 #slide(title: "The Mechanism: SOC-Driven Band Inversion")[
   #grid(
