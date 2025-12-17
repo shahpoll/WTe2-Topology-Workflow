@@ -141,54 +141,57 @@ def plot_3d_structure():
     
     ax.scatter(xs, ys, zs, c=colors, s=sizes, edgecolors='black', depthshade=True, alpha=1.0)
     
-    # 3. Draw Unit Cell Box (Original)
-    # Origin at 0,0,0 ?? No, atoms might be shifted.
-    # Assuming standard QE start at 0
-    origin = np.array([0., 0., 0.])
-    # Vectors
-    v1, v2, v3 = cell[0], cell[1], cell[2]
-    # Box edges
-    edges = [
-        [origin, origin+v1], [origin, origin+v2], [origin, origin+v3],
-        [origin+v1, origin+v1+v2], [origin+v1, origin+v1+v3],
-        [origin+v2, origin+v2+v1], [origin+v2, origin+v2+v3],
-        [origin+v3, origin+v3+v1], [origin+v3, origin+v3+v2],
-        [origin+v1+v2, origin+v1+v2+v3],
-        [origin+v1+v3, origin+v1+v3+v2],
-        [origin+v2+v3, origin+v2+v3+v1]
+    # 3. Draw Unit Cell Box (In-Plane Only for Monolayer)
+    # Drawing full vacuum box creates huge whitespace. 
+    # We project the box to the mean Z height of atoms.
+    z_mean = np.mean(zs)
+    
+    # Vectors (Using only a and b)
+    origin_shift = np.array([0., 0., z_mean]) # Center box on atoms
+    v1, v2 = cell[0], cell[1]
+    
+    # Draw simple 2D parallelogram at z_mean
+    # Vertices: 0, v1, v1+v2, v2, 0
+    box_points = [
+        origin_shift,
+        origin_shift + v1,
+        origin_shift + v1 + v2,
+        origin_shift + v2,
+        origin_shift
     ]
-    # Also shift by 1 unit to show the displayed supercell boundary? 
-    # Let's just draw the PRIMARY unit cell to show the Repeat Unit
-    for start, end in edges:
-        ax.plot([start[0], end[0]], [start[1], end[1]], [start[2], end[2]], 
-                color='red', linestyle='--', alpha=0.8, linewidth=2)
-        
+    
+    bx = [p[0] for p in box_points]
+    by = [p[1] for p in box_points]
+    bz = [p[2] for p in box_points]
+    
+    ax.plot(bx, by, bz, color='red', linestyle='--', alpha=0.9, linewidth=2.5, label='Unit Cell')
+
     # 4. Camera & Aesthetics
-    # Remove pane background for "Academic Paper" look
     ax.xaxis.pane.fill = False
     ax.yaxis.pane.fill = False
     ax.zaxis.pane.fill = False
     ax.grid(False)
     
-    # Set view angle
-    # Azimuth -60, Elev 30 is standard isometric
-    ax.view_init(elev=20, azim=-45)
+    # Isometric View
+    ax.view_init(elev=30, azim=-60)
+    
+    # Aspect Ratio - CRITICAL for removing whitespace
+    # We want X and Y to be proportional, and Z to be squashed
+    ax.set_box_aspect((np.ptp(xs), np.ptp(ys), 0.3 * np.ptp(xs))) 
     
     # Labels
-    ax.set_xlabel(r"$x$ ($\AA$)")
-    ax.set_ylabel(r"$y$ ($\AA$)")
-    ax.set_zlabel(r"$z$ ($\AA$)")
-    ax.set_title("1T'-WTe2 Crystal Structure (3D View)", pad=20)
+    ax.set_xlabel(r"$x$ ($\AA$)", labelpad=10)
+    ax.set_ylabel(r"$y$ ($\AA$)", labelpad=10)
+    ax.set_zlabel(r"$z$ ($\AA$)", labelpad=15) # Increased padding to prevent cutoff
+    ax.set_title("1T'-WTe2 Crystal Structure", pad=0)
     
-    # Limits - Tighten to the atoms
-    ax.set_xlim(min(xs)-1, max(xs)+1)
-    ax.set_ylim(min(ys)-1, max(ys)+1)
-    # Z limits: Monolayer is thin, but we want to show it flat-ish
-    # z mean
-    z_mean = np.mean(zs)
-    ax.set_zlim(z_mean - 5, z_mean + 5)
+    # Limits
+    ax.set_xlim(min(xs), max(xs))
+    ax.set_ylim(min(ys), max(ys))
+    ax.set_zlim(z_mean - 2, z_mean + 2)
     
-    # Remove Ticks? Maybe keep them for scale.
+    # Turn off Z ticks? They don't mean much for a floating monolayer
+    ax.set_zticks([])
     
     # Save
     out_dir = os.path.dirname(os.path.abspath(__file__)) + "/../figures"
