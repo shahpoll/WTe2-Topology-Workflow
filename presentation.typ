@@ -96,7 +96,7 @@
       ]
     ],
     align(center + horizon)[
-      #image("figures/Fig_Structure_Views_V2.png", width: 90%)
+      #image("figures/Fig_Structure_Presentation.png", width: 90%)
       #text(16pt, style: "italic")[The 1T#super[#sym.prime] Distorted Structure: A Playground for Topology]
     ]
   )
