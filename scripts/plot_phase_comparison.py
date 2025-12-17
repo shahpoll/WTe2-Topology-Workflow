@@ -129,14 +129,22 @@ def plot_phase_comparison():
     
     ax2.text(1.5, -0.5, "Peierls Distortion (Zigzag Chains)", ha='center', fontsize=18, style='italic', color='#555')
     
-    # Arrow between them
-    # Drawn in figure coords or just manually?
-    # No, separate plots.
+    # --- LEGEND & ANNOTATIONS ---
+    # Legend for W Atom
+    from matplotlib.lines import Line2D
+    legend_elements = [
+        Line2D([0], [0], marker='o', color='w', label='Tungsten (W) Atom',
+               markerfacecolor='#2c3e50', markersize=25, markeredgecolor='black'),
+        Line2D([0], [0], color='#e74c3c', lw=5, label='Dimerized Bond (Zigzag)'),
+    ]
     
-    # Add legend manually?
-    # Red line = Strong W-W Bond
+    # Place legend on the second plot or unified?
+    # Unified legend at bottom center
+    fig.legend(handles=legend_elements, loc='lower center', ncol=2, fontsize=20, bbox_to_anchor=(0.5, 0.05))
     
+    # Adjust layout to make room for legend
     plt.tight_layout()
+    plt.subplots_adjust(bottom=0.2) # Make space at bottom
     
     # Output
     out_dir = os.path.dirname(os.path.abspath(__file__)) + "/../figures"

@@ -138,9 +138,9 @@
       #v(20pt)
       #card[
         *Distorted ($1T#super[#sym.prime]$)* \
-        - **Peierls Instability:** Spontaneous symmetry breaking.
-        - **Zigzag Chains:** Formation of W-W dimers (Red lines).
-        - **Topology:** This distortion, combined with SOC, inverts the bands.
+        - *Peierls Instability:* Spontaneous symmetry breaking.
+        - *Zigzag Chains:* Formation of W-W dimers (Red lines).
+        - *Topology:* This distortion, combined with SOC, inverts the bands.
       ]
     ]
   )
