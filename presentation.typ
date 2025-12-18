@@ -120,27 +120,47 @@
   )
 ]
 
-// --- SLIDE 2c: PHASE COMPARISON ---
-#slide(title: [The Distinction: $1T$ vs $1T#super[#sym.prime]$ Phase])[
+// --- SLIDE 2c: 1T PHASE (START) ---
+#slide(title: [The Starting Point: High Symmetry $1T$ Phase])[
   #grid(
-    columns: (1fr, 30pt, 1fr),
+    columns: (1.5fr, 1fr),
+    gutter: 30pt,
     align(center + horizon)[
-      #image("figures/Fig_Phase_Comparison.png", width: 140%)
+      #image("figures/Fig_Phase_1T.png", width: 100%)
     ],
-    [], // Spacer
     [
       #card[
-        *High Symmetry ($1T$)* \
-        - Isotropic Triangular Lattice.
-        - Metallic or Trivial Insulator.
-        - Unstable in WTe#sub[2].
+        *Lattice Geometry:* \
+        - Perfect Triangular Lattice of Tungsten.
+        - Centrosymmetric (Inversion Symmetry).
+        
+        *Properties:*
+        - Isotropic Bonds (Gray).
+        - **Metallic:** Bands cross at Fermi level.
+        - **Unstable:** Spontaneously distorts at Low T.
       ]
-      #v(20pt)
+    ]
+  )
+]
+
+// --- SLIDE 2d: 1T' PHASE (FLIP) ---
+#slide(title: [The Distortion: Spontaneous $1T#super[#sym.prime]$ Phase])[
+  #grid(
+    columns: (1.5fr, 1fr),
+    gutter: 30pt,
+    align(center + horizon)[
+      #image("figures/Fig_Phase_1T_Prime.png", width: 100%)
+    ],
+    [
       #card[
-        *Distorted ($1T#super[#sym.prime]$)* \
-        - *Peierls Instability:* Spontaneous symmetry breaking.
-        - *Zigzag Chains:* Formation of W-W dimers (Red lines).
-        - *Topology:* This distortion, combined with SOC, inverts the bands.
+        *Lattice Geometry:* \
+        - Peierls Distortion ($x$-axis dimerization).
+        - Formation of *Zigzag Chains*.
+        
+        *Properties:*
+        - *Anisotropic Bonds* (*Red*).
+        - *Insulating:* A gap opens ($approx$ 50 meV).
+        - *Topological:* Parity exchange occurs.
       ]
     ]
   )

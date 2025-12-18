@@ -55,6 +55,11 @@ def plot_phase_comparison():
 
     # --- PLOT 1: 1T (Ideal) ---
     fig1, ax1 = plt.subplots(figsize=(10, 8))
+    
+    # Plot Atoms
+    ax1.scatter(x_ideal, y_ideal, s=800, c='#2c3e50', edgecolors='black', label='W Atom')
+    
+    # Plot Bonds
     for i in range(len(x_ideal)):
         p1 = np.array([x_ideal[i], y_ideal[i]])
         for j in range(i+1, len(x_ideal)):
@@ -66,17 +71,18 @@ def plot_phase_comparison():
     # Styling
     ax1.set_aspect('equal')
     ax1.axis('off')
-    # Force limits
     ax1.set_xlim(xlims)
     ax1.set_ylim(ylims)
     
-    # Legend (Unified)
+    # Legend (Unified items mostly to keep size similar)
     from matplotlib.lines import Line2D
     legend_elements = [
         Line2D([0], [0], marker='o', color='w', label='Tungsten (W)',
                markerfacecolor='#2c3e50', markersize=25, markeredgecolor='black'),
+        Line2D([0], [0], color='gray', lw=3, label='Isotropic Bond'),
     ]
-    ax1.legend(handles=legend_elements, loc='lower center', ncol=1, fontsize=20)
+    # Fixed location to prevent jumping
+    ax1.legend(handles=legend_elements, loc='lower center', ncol=2, fontsize=20, bbox_to_anchor=(0.5, 0.02))
     
     plt.tight_layout()
     fig1.savefig(f"{out_dir}/Fig_Phase_1T.png", dpi=200)
@@ -99,15 +105,15 @@ def plot_phase_comparison():
                 
     ax2.set_aspect('equal')
     ax2.axis('off')
-    ax2.set_xlim(xlims) # IDENTICAL LIMITS
+    ax2.set_xlim(xlims) 
     ax2.set_ylim(ylims)
     
     legend_elements2 = [
         Line2D([0], [0], marker='o', color='w', label='Tungsten (W)',
                markerfacecolor='#2c3e50', markersize=25, markeredgecolor='black'),
-        Line2D([0], [0], color='#e74c3c', lw=6, label='Zigzag Chain'),
+        Line2D([0], [0], color='#e74c3c', lw=8, label='Zigzag Bond'),
     ]
-    ax2.legend(handles=legend_elements2, loc='lower center', ncol=2, fontsize=20)
+    ax2.legend(handles=legend_elements2, loc='lower center', ncol=2, fontsize=20, bbox_to_anchor=(0.5, 0.02))
 
     plt.tight_layout()
     fig2.savefig(f"{out_dir}/Fig_Phase_1T_Prime.png", dpi=200)
