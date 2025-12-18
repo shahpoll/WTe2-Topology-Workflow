@@ -220,7 +220,7 @@ def plot_1T_3d():
     ax.set_xlabel(r"$x$ ($\AA$)", labelpad=10)
     ax.set_ylabel(r"$y$ ($\AA$)", labelpad=10)
     # Pull Z label closer to avoid clipping
-    ax.set_zlabel(r"$z$ ($\AA$)", labelpad=2) 
+    ax.set_zlabel(r"$z$ ($\AA$)", labelpad=8) 
     
     # Title
     ax.set_title(r"1T-WTe$_2$ (Ideal)", pad=-20, fontsize=24, y=1.02)
