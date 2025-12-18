@@ -98,7 +98,75 @@
   ]
 ]
 
+// --- SLIDE 5: PHASE TRANSITION SCHEMATIC ---
+#slide(title: "Phase Transition Mechanism")[
+   #align(center + horizon)[
+     #image("figures/Fig_Phase_Comparison_Schematic.png", width: auto, height: 11cm)
+   ]
+]
 
+// --- SLIDE 6: ELECTRONIC STRUCTURE (BANDS) ---
+#slide(title: "Electronic Structure: Band Inversion")[
+  #grid(
+    columns: (1.2fr, 1fr),
+    gutter: 1em,
+    [
+      #align(center + horizon)[
+        #image("figures/Fig_3_Bands_soc.png", width: auto, height: 11cm)
+      ]
+    ],
+    [
+      #card[
+        *Key Features:* \
+        - *Band Inversion:* $p$-orbital bands swap parity near $\Gamma$.
+        - *Spin-Orbit Coupling:* Essential for opening the gap ($E_g \approx 50$ meV).
+        - *Direct Gap:* Located at $Q$ point (monolayer feature).
+      ]
+    ]
+  )
+]
+
+// --- SLIDE 7: SPIN TEXTURE ---
+#slide(title: "Spin Texture & Berry Curvature")[
+    #grid(
+    columns: (1fr, 1fr),
+    gutter: 1em,
+    [
+      #align(center + horizon)[
+        #image("figures/Fig_4_SpinTexture.png", width: auto, height: 11cm)
+      ]
+    ],
+    [
+       #card[
+        *Spin-Momentum Locking:* \
+        - Spins are locked to momentum $k$.
+        - Signatures of topological surface states.
+        - *Result:* Suppression of backscattering.
+      ]
+    ]
+  )
+]
+
+// --- SLIDE 8: EDGE STATES (THE EVIDENCE) ---
+#slide(title: "The Definitive Evidence: Edge States")[
+  #grid(
+    columns: (1.5fr, 1fr),
+    gutter: 1em,
+    [
+      #align(center + horizon)[
+        #image("figures/Fig_5_Edge_States.png", width: auto, height: 11cm)
+      ]
+    ],
+    [
+      #card[
+        *Topological Protection:* \
+        - **Gapless States:** Crossing the bulk gap.
+        - **Conducting Channels:** Located physically at the edges.
+        - **Robustness:** Immune to non-magnetic disorder.
+      ]
+    ]
+  )
+]
 
 // --- SLIDE 3: 1T PHASE (IDEAL) ---
 #slide(title: "Crystal Structure: The Ideal $1T$ Phase")[
