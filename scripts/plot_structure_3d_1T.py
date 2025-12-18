@@ -36,8 +36,8 @@ def plot_1T_3d():
     coords = []
     species = []
     
-    # Create 3x3 supercell for visualization
-    nx, ny = 3, 3
+    # Create 2x2 supercell for visualization (Matches 1T' better)
+    nx, ny = 2, 2
     
     for i in range(-1, nx-1):
         for j in range(-1, ny-1):
@@ -84,26 +84,24 @@ def plot_1T_3d():
         
         # We manually constructed the list.
         # Let's count. 
-        # i=-1: j=-1,0,1 (3 cells)
-        # i=0:  j=-1,0,1 (3 cells). Index 3,4,5.
-        # j=0 is the middle one of i=0 loop.
-        # So "Primary" atoms are those generated when i=0, j=0.
-        
-        # We process 3 atoms per cell (W, Te1, Te2).
-        # i ranges -1..1 (3 values). j ranges -1..1 (3 values). 9 cells total.
-        # 27 atoms total.
-        # The (0,0) cell is the 5th cell (index 4).
-        # Atoms 12, 13, 14.
+        # i ranges -1..0 (2 values). j ranges -1..0 (2 values). 4 cells total.
+        # 12 atoms total.
+        # The (0,0) cell is the 4th cell (index 3).
+        # Atoms 9, 10, 11.
         
         floor_idx = idx // 3 # Which cell number
         # Cell order: 
-        # i=-1, j=-1 (0)
-        # i=-1, j=0  (1)
-        # i=-1, j=1  (2)
-        # i=0,  j=-1 (3)
-        # i=0,  j=0  (4) -> TARGET
+        # i=-1, j=-1 (0)   #0
+        # i=-1, j=0  (1)   #1
+        # i=0,  j=-1 (2)   #2
+        # i=0,  j=0  (3)   #3 -> TARGET (Central)
         
-        is_primary = (floor_idx == 4)
+        # nx=2, ny=2. Loop i: -1, 0. j: -1, 0.
+        # ij pairs: (-1,-1), (-1,0), (0,-1), (0,0)
+        # Total 4 cells.
+        # Index 3 is (0,0).
+        
+        is_primary = (floor_idx == 3)
 
         atom = species[idx]
         if atom == 'W':
@@ -170,7 +168,8 @@ def plot_1T_3d():
     ax.view_init(elev=30, azim=-60)
     
     # Aspect Ratio - FIXED MATCHING 1T'
-    ax.set_box_aspect((10, 10, 2))
+    # Range X~7, Y~8, Z~5
+    ax.set_box_aspect((7.5, 8.5, 5.0))
     
     # Limits - FIXED MATCHING 1T'
     ax.set_xlim(-2, 8)
@@ -185,13 +184,12 @@ def plot_1T_3d():
     ax.set_zlabel(r"$z$ ($\AA$)", labelpad=25)
     ax.set_title(r"1T-WTe$_2$ (Ideal)", pad=0, fontsize=24)
     
-    # Limits - FIXED MATCHING 1T'
-    ax.set_xlim(-0.5, 8.5)
-    ax.set_ylim(-1.0, 8.0)
-    ax.set_zlim(-3, 3)
+    # Limits - FIXED MATCHING 1T' (Tighter)
+    ax.set_xlim(-0.5, 7.0)
+    ax.set_ylim(-1.0, 7.5)
+    ax.set_zlim(-2.5, 2.5)
     
-    # Aspect Ratio - FIXED MATCHING 1T'
-    ax.set_box_aspect((9, 9, 2))
+    ax.set_axis_off() # This line was duplicated, keeping the one from the instruction.
     
     out_dir = os.path.dirname(os.path.abspath(__file__)) + "/../figures"
     if not os.path.exists(out_dir): os.makedirs(out_dir)

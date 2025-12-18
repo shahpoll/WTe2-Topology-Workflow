@@ -230,29 +230,18 @@ def plot_3d_structure():
     ax.view_init(elev=30, azim=-60)
     
     # Aspect Ratio - FIXED for Flipbook Alignment
-    # X range = 10 (-2 to 8), Y range = 10 (-4 to 6) -> Ratio 1:1
-    # Z range = 6 (-3 to 3) -> Ratio 0.6 relative to X?
-    # Let's set strictly.
-    ax.set_box_aspect((10, 10, 2)) 
+    ax.set_box_aspect((7.5, 8.5, 5.0)) 
     
     # Labels
     ax.set_xlabel(r"$x$ ($\AA$)", labelpad=10)
     ax.set_ylabel(r"$y$ ($\AA$)", labelpad=10)
-    ax.set_zlabel(r"$z$ ($\AA$)", labelpad=25) # Increased padding to fix distortion/clipping
+    ax.set_zlabel(r"$z$ ($\AA$)", labelpad=25)
     ax.set_title(r"1T'-WTe$_2$ (Distorted)", pad=0, fontsize=24) 
     
     # Limits - TIGHTENED to remove whitespace
-    # Atoms roughly 0 to 7 in X/Y.
-    # Center around (3.5, 3.5).
-    # Range of 8 should be enough? (0 to 8)
-    # Let's use (-0.5, 8.5)
-    ax.set_xlim(-0.5, 8.5)
-    ax.set_ylim(-1.0, 8.0)
-    ax.set_zlim(-3, 3)
-    
-    # Aspect ratio matches range
-    # X range = 9, Y range = 9
-    ax.set_box_aspect((9, 9, 2))
+    ax.set_xlim(-0.5, 7.0)
+    ax.set_ylim(-1.0, 7.5)
+    ax.set_zlim(-2.5, 2.5)
     
     # Turn ON Z ticks
     
