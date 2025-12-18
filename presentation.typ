@@ -112,7 +112,7 @@
     gutter: 1em,
     [
       #align(center + horizon)[
-        #image("figures/Fig_3_Bands_soc.png", width: auto, height: 10cm)
+        #image("figures/Fig_Bands_Presentation.png", width: auto, height: 10cm)
       ]
     ],
     [
@@ -127,25 +127,25 @@
 ]
 
 // --- SLIDE 7: SPIN TEXTURE ---
-#slide(title: "Spin Texture & Berry Curvature")[
-    #grid(
-    columns: (1fr, 1fr),
-    gutter: 1em,
-    [
-      #align(center + horizon)[
-        #image("figures/Fig_4_SpinTexture.png", width: auto, height: 9.5cm)
-      ]
-    ],
-    [
-       #card[
-        *Spin-Momentum Locking:* \
-        - Spins are locked to momentum $k$.
-        - Signatures of topological surface states.
-        - *Result:* Suppression of backscattering.
-      ]
-    ]
-  )
-]
+// #slide(title: "Spin Texture & Berry Curvature")[
+//     #grid(
+//     columns: (1fr, 1fr),
+//     gutter: 1em,
+//     [
+//       #align(center + horizon)[
+//         #image("figures/Fig_4_SpinTexture.png", width: auto, height: 9.5cm)
+//       ]
+//     ],
+//     [
+//        #card[
+//         *Spin-Momentum Locking:* \
+//         - Spins are locked to momentum $k$.
+//         - Signatures of topological surface states.
+//         - *Result:* Suppression of backscattering.
+//       ]
+//     ]
+//   )
+// ]
 
 // --- SLIDE 8: EDGE STATES (THE EVIDENCE) ---
 #slide(title: "The Definitive Evidence: Edge States")[
@@ -154,7 +154,7 @@
     gutter: 1em,
     [
       #align(center + horizon)[
-        #image("figures/Fig_5_Edge_States.png", width: auto, height: 10cm)
+        #image("figures/Fig_Ribbon_EdgeStates.png", width: auto, height: 10cm)
       ]
     ],
     [
