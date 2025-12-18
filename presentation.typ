@@ -120,47 +120,47 @@
   )
 ]
 
-// --- SLIDE 2c: 1T PHASE (START) ---
-#slide(title: [The Starting Point: High Symmetry $1T$ Phase])[
+// --- SLIDE 3: 1T PHASE (IDEAL) ---
+#slide(title: [The Educational Journey: 1. The Ideal $1T$ Phase])[
   #grid(
-    columns: (1.5fr, 1fr),
+    columns: (1.2fr, 1fr),
     gutter: 30pt,
     align(center + horizon)[
-      #image("figures/Fig_Phase_1T.png", width: 100%)
+      #image("figures/Fig_Structure_3D_1T.png", width: 90%)
     ],
     [
       #card[
-        *Lattice Geometry:* \
-        - Perfect Triangular Lattice of Tungsten.
-        - Centrosymmetric (Inversion Symmetry).
+        *The "Parent" Structure:* \
+        - **Symmetry:** Perfect Octahedral Coordination.
+        - **Lattice:** Hexagonal / Triangular W Lattice.
         
-        *Properties:*
-        - Isotropic Bonds (Gray).
-        - *Metallic:* Bands cross at Fermi level.
-        - *Unstable:* Spontaneously distorts at Low T.
+        *Why it fails:*
+        - **Unstable:** High energy state.
+        - **Metallic:** No band gap.
+        - *Not Topological.*
       ]
     ]
   )
 ]
 
-// --- SLIDE 2d: 1T' PHASE (FLIP) ---
-#slide(title: [The Distortion: Spontaneous $1T#super[#sym.prime]$ Phase])[
+// --- SLIDE 4: 1T' PHASE (REALITY) ---
+#slide(title: [The Educational Journey: 2. The Distorted $1T#super[#sym.prime]$ Phase])[
   #grid(
-    columns: (1.5fr, 1fr),
+    columns: (1.2fr, 1fr),
     gutter: 30pt,
     align(center + horizon)[
-      #image("figures/Fig_Phase_1T_Prime.png", width: 100%)
+      #image("figures/Fig_Structure_3D_Presentation.png", width: 90%)
     ],
     [
       #card[
-        *Lattice Geometry:* \
-        - Peierls Distortion ($x$-axis dimerization).
-        - Formation of *Zigzag Chains*.
+        *The "Actual" Structure:* \
+        - **Symmetry:** Distorted (Peierls Instability).
+        - **Action:** W atoms dimerize along one axis.
         
-        *Properties:*
-        - *Anisotropic Bonds* (*Red*).
-        - *Insulating:* A gap opens ($approx$ 50 meV).
-        - *Topological:* Parity exchange occurs.
+        *The Consequence:*
+        - **Stable:** Energetically favorable.
+        - **Insulating:** Gap opens ($E_g > 0$).
+        - **Topological:** Inverted Band Order ($Z_2=1$).
       ]
     ]
   )
