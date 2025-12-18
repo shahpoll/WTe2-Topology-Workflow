@@ -39,20 +39,19 @@ def parse_labels(labelfile):
         parts = line.strip().split()
         if len(parts) >= 2:
             # Usually format: "Label  Coordinate" or "Coordinate Label"
+            # wte2_band.labelinfo.dat format: Label Index Coordinate Kx Ky Kz
+            # Example: G 1 0.000 ...
+            # We want parts[0] (Label) and parts[2] (Coordinate)
             try:
-                # Try reading 2nd column as float (standard QE 'bands.out.gnu' labels often are " " "quoted" or just text)
-                # But wte2_band.labelinfo.dat from simple script usually: "Label k-coord"
-                # Let's inspect typical content if we fail, but try-except is good.
-                
-                # Check which one is float
-                try:
+                pos = float(parts[2])
+                lbl = parts[0]
+            except (ValueError, IndexError):
+                # Fallback or different format
+                try: 
                     pos = float(parts[1])
                     lbl = parts[0]
                 except ValueError:
-                    pos = float(parts[0])
-                    lbl = parts[1]
-            except ValueError:
-                continue
+                    continue
 
             # Formatting Gamma
             if 'G' in lbl or 'gamma' in lbl.lower():
@@ -112,15 +111,27 @@ def plot_bands():
 
     # 5. Handle Ticks
     xticks, xlabels = parse_labels(LABEL_FILE)
-    # Fallback if label file parsing failed implies we might want to manually set if we know the path
-    # If using wte2_band.dat which is from Wannier90, the path is standard
-    if len(xticks) < 2:
-        k_max = bands[0][0][-1] if bands else 1.0
-        xticks = [0, k_max * 0.25, k_max * 0.5, k_max * 0.75, k_max]
+    
+    # Check if labels are sparse or missing (User reported missing labels)
+    # The standard path is Gamma -> X -> M -> Gamma -> Y
+    # We will enforce this if the parsed labels don't look sufficient or if we want to guarantee the "Presentation" look.
+    if len(xticks) < 3 or xlabels.count(r'$\mathbf{\Gamma}$') < 1: 
+        print("Using robust fallback labels for Presentation...")
+        k_min = min(k)
+        k_max = max(k)
+        # Assuming equidistant or standard spacing for schematic purposes if data mapping fails, 
+        # BUT better to find the kinks in the K-path from the data derivative if possible.
+        # Ideally, we trust the `labelinfo` but if it's empty, we must guess.
+        # For this dataset, the path segments are usually equal length or defined by the BZ.
+        # Let's trust the data bounds and place standard labels assuming uniform segments if file fails.
+        # 4 segments: G-X, X-M, M-G, G-Y
+        segment_width = (k_max - k_min) / 4.0
+        xticks = [k_min, k_min + segment_width, k_min + 2*segment_width, k_min + 3*segment_width, k_max]
         xlabels = [r'$\mathbf{\Gamma}$', r'$\mathbf{X}$', r'$\mathbf{M}$', r'$\mathbf{\Gamma}$', r'$\mathbf{Y}$']
 
+    # Ensure labels are visible (Presentation Mode)
     ax.set_xticks(xticks)
-    ax.set_xticklabels(xlabels)
+    ax.set_xticklabels(xlabels, fontsize=18, fontweight='bold')
     
     # Add vertical lines for High Symmetry Points
     for x in xticks:
