@@ -36,11 +36,13 @@ def plot_1T_3d():
     coords = []
     species = []
     
-    # Create 3x3 supercell for visualization
-    nx, ny = 3, 3
+    # Create 2x2 supercell for visualization (Matches 1T' better)
+    # 1T' uses standard expansion: 0 to nx. 
+    # We must match this flow (Positive Quadrant)
+    nx, ny = 2, 2
     
-    for i in range(-1, nx-1):
-        for j in range(-1, ny-1):
+    for i in range(0, nx):
+        for j in range(0, ny):
             # Origin of cell
             origin = i*a1 + j*a2
             
@@ -62,18 +64,16 @@ def plot_1T_3d():
     coords = np.array(coords)
     
     # --- COORDINATE ALIGNMENT ---
-    # Shift 1T atoms to match the "Center of Mass" of the 1T' figure window.
-    # Target Box (from 1T' Debug):
-    # X: -0.1 to 5.74 -> Center ~ 2.82
-    # Y: 0.82 to 12.91 -> Center ~ 6.87
-    # Z: 6.96 to 12.96 -> Center ~ 9.96
+    # Target Centroid of the Primary Unit Cell (from 1T' Debug)
+    # DEBUG_PRIMARY_CENTROID: [ 1.74542456  4.70617937 10.15875225]
+    target_primary_centroid = np.array([1.745, 4.706, 10.16])
     
-    target_center = np.array([2.82, 6.87, 9.96])
+    # Calculate Current Primary Centroid (Index 0 now, since i=0,j=0 is first)
+    # First 3 atoms are cell (0,0)
+    current_primary_atoms = coords[0:3]
+    current_centroid = np.mean(current_primary_atoms, axis=0)
     
-    # Current Center
-    current_center = np.mean(coords, axis=0)
-    shift = target_center - current_center
-    
+    shift = target_primary_centroid - current_centroid
     coords += shift
     
     # --- PLOTTING ---
@@ -85,11 +85,9 @@ def plot_1T_3d():
     zs = coords[:, 2]
     
     for idx, (x, y, z) in enumerate(coords):
-        floor_idx = idx // 3 # Which cell number
-        # Recalculate primary cell since we kept nx=2,ny=2 from previous Step 6167
-        # 12 atoms total. cell order logic is same.
-        # But we must ensure highlighting works.
-        is_primary = (floor_idx == 3) # Target central
+        floor_idx = idx // 3
+        # Cell order: i=0,j=0 is Index 0.
+        is_primary = (floor_idx == 0) # Target First Cell
 
         atom = species[idx]
         if atom == 'W':
@@ -131,16 +129,11 @@ def plot_1T_3d():
                 ax.plot([p1[0], p2[0]], [p1[1], p2[1]], [p1[2], p2[2]], 
                        color='gray', alpha=0.4, linewidth=2)
 
-    # Unit Cell Box (Center Cell)
-    # Re-calculate box points based on shifted origin
-    # Primary cell is index 3 => (i=0, j=0)
-    # The 'origin' variable in loop was for (0,0,0) shift.
-    # We need to find the shift applied to the (0,0) cell lattice points.
-    # Original 'origin' for i=0,j=0 was (0,0,0) before manual shift.
+    # Unit Cell Box (Center Cell - Now Index 0)
+    # The 'origin' of Index 0 (i=0,j=0) was (0,0,0) before shift.
     # So new origin is just 'shift'.
-    # Let's anchor the box there.
     
-    box_origin = shift # Assuming W(0,0) was at 0,0,0 and is now at 'shift'.
+    box_origin = shift 
     # Need to project to mean Z plane
     z_mean_new = np.mean(zs)
     box_origin[2] = z_mean_new
