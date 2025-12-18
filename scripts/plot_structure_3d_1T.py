@@ -219,7 +219,8 @@ def plot_1T_3d():
     # Labels
     ax.set_xlabel(r"$x$ ($\AA$)", labelpad=10)
     ax.set_ylabel(r"$y$ ($\AA$)", labelpad=10)
-    ax.set_zlabel(r"$z$ ($\AA$)", labelpad=12)
+    # Pull Z label closer to avoid clipping
+    ax.set_zlabel(r"$z$ ($\AA$)", labelpad=2) 
     
     # Title
     ax.set_title(r"1T-WTe$_2$ (Ideal)", pad=-20, fontsize=24, y=1.02)
@@ -236,7 +237,8 @@ def plot_1T_3d():
     
     out_dir = os.path.dirname(os.path.abspath(__file__)) + "/../figures"
     if not os.path.exists(out_dir): os.makedirs(out_dir)
-    plt.savefig(f"{out_dir}/Fig_Structure_3D_1T.png", dpi=300, bbox_inches='tight', pad_inches=0.02)
+    # Increase pad_inches to ensure Z label is saved
+    plt.savefig(f"{out_dir}/Fig_Structure_3D_1T.png", dpi=300, bbox_inches='tight', pad_inches=0.1)
     print(f"Saved {out_dir}/Fig_Structure_3D_1T.png")
 
 if __name__ == "__main__":
