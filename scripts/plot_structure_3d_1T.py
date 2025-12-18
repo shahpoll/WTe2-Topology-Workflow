@@ -36,45 +36,95 @@ def plot_1T_3d():
     coords = []
     species = []
     
-    # Create 2x2 supercell for visualization (Matches 1T' better)
-    # 1T' uses standard expansion: 0 to nx. 
-    # We must match this flow (Positive Quadrant)
-    nx, ny = 2, 2
+    # Create Large Primitive Grid to ensure we fill the view
+    # We will then select a central "Rectangular" cell to be the 'Primary' one.
+    nx_range = range(-3, 4)
+    ny_range = range(-2, 5)
     
-    for i in range(0, nx):
-        for j in range(0, ny):
+    for i in nx_range:
+        for j in ny_range:
             # Origin of cell
             origin = i*a1 + j*a2
             
-            # W Atom
             w_pos = origin
             coords.append(w_pos)
             species.append('W')
             
-            # Te Top
             te1_pos = origin + (1.0/3.0)*a1 + (2.0/3.0)*a2 + np.array([0, 0, z_te])
             coords.append(te1_pos)
             species.append('Te')
             
-            # Te Bottom
             te2_pos = origin + (2.0/3.0)*a1 + (1.0/3.0)*a2 + np.array([0, 0, -z_te])
             coords.append(te2_pos)
             species.append('Te')
             
     coords = np.array(coords)
     
-    # --- COORDINATE ALIGNMENT ---
-    # Target Centroid of the Primary Unit Cell (from 1T' Debug)
-    # DEBUG_PRIMARY_CENTROID: [ 1.74542456  4.70617937 10.15875225]
-    target_primary_centroid = np.array([1.745, 4.706, 10.16])
+    # --- DEFINE RECTANGULAR CELL (Match 1T') ---
+    # The 1T' cell is roughly a 1x2 supercell of 1T.
+    # a_rect = a1
+    # b_rect = a1 + 2*a2 (Orthogonal to a1)
     
-    # Calculate Current Primary Centroid (Index 0 now, since i=0,j=0 is first)
-    # First 3 atoms are cell (0,0)
-    current_primary_atoms = coords[0:3]
-    current_centroid = np.mean(current_primary_atoms, axis=0)
+    u_rect = a1
+    v_rect = a1 + 2*a2
+    
+    # Define the "Ideal" Box at the origin (0,0,0) initially
+    # We want a box starting at origin containing the atoms.
+    # For a perfect match, the box should be [0, u] x [0, v].
+    
+    # Identify atoms inside this Rectangular Box (Primary Cell)
+    # We'll use dot products to project atoms relative to a chosen origin.
+    # Let's pick origin such that it captures a nice full cell.
+    # If we pick (0,0), the box includes (0,0) W and (1,1) W (skew).
+    
+    # Let's find atoms in the box defined by parallelogram of u_rect, v_rect.
+    # Project coords onto normalized u and v?
+    # Or just geometric check: 
+    # pos = c1*u_rect + c2*v_rect. 0 <= c1 < 1, 0 <= c2 < 1.
+    
+    # Matrix M = [u, v, z_axis]. Inv(M) * pos = [c1, c2, c3]
+    # u = [a, 0, 0]
+    # v = [0, b, 0] (Since a1+2a2 is pure Y)
+    # So simple x,y bounds!
+    
+    x_limit = np.linalg.norm(u_rect) # 3.53
+    y_limit = np.linalg.norm(v_rect) # 6.12 approx
+    
+    # We need to pick a "Reference Origin" for the lattice to define the box.
+    # Let's try picking one W atom near the middle of our generated cloud as the Box Origin.
+    # Our loops went -3..4. (0,0) is in middle. Let's use (0,0) W atom as origin.
+    ref_origin = np.array([0., 0., 0.])
+    
+    primary_indices = []
+    
+    for idx, (x, y, z) in enumerate(coords):
+        # Relative pos
+        rx = x - ref_origin[0]
+        ry = y - ref_origin[1]
+        
+        # Check tolerance to include atoms ON the boundary (corners)
+        # 1T' usually highlights the corner Ws + internal.
+        tol = 0.1
+        
+        if (-tol <= rx <= x_limit + tol) and (-tol <= ry <= y_limit + tol):
+            primary_indices.append(idx)
+            
+    # --- COORDINATE ALIGNMENT ---
+    # Calculate Centroid of these Primary Atoms
+    primary_atom_coords = coords[primary_indices]
+    current_centroid = np.mean(primary_atom_coords, axis=0)
+    
+    # Target Centroid (from 1T' Debug)
+    target_primary_centroid = np.array([1.745, 4.706, 10.16])
     
     shift = target_primary_centroid - current_centroid
     coords += shift
+    
+    # Apply shift to reference origin too (for drawing box)
+    box_origin = ref_origin + shift
+    # Project box origin Z to mean Z
+    box_origin[2] = np.mean(coords[:, 2])
+
     
     # --- PLOTTING ---
     
@@ -85,9 +135,7 @@ def plot_1T_3d():
     zs = coords[:, 2]
     
     for idx, (x, y, z) in enumerate(coords):
-        floor_idx = idx // 3
-        # Cell order: i=0,j=0 is Index 0.
-        is_primary = (floor_idx == 0) # Target First Cell
+        is_primary = (idx in primary_indices)
 
         atom = species[idx]
         if atom == 'W':
@@ -129,20 +177,12 @@ def plot_1T_3d():
                 ax.plot([p1[0], p2[0]], [p1[1], p2[1]], [p1[2], p2[2]], 
                        color='gray', alpha=0.4, linewidth=2)
 
-    # Unit Cell Box (Center Cell - Now Index 0)
-    # The 'origin' of Index 0 (i=0,j=0) was (0,0,0) before shift.
-    # So new origin is just 'shift'.
-    
-    box_origin = shift 
-    # Need to project to mean Z plane
-    z_mean_new = np.mean(zs)
-    box_origin[2] = z_mean_new
-    
+    # Unit Cell Box (Rectangular 1T' shape)
     uc_corners = [
         box_origin,
-        box_origin + a1,
-        box_origin + a1 + a2,
-        box_origin + a2,
+        box_origin + u_rect,
+        box_origin + u_rect + v_rect,
+        box_origin + v_rect,
         box_origin
     ]
     uc_x = [p[0] for p in uc_corners]
