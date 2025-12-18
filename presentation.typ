@@ -99,11 +99,11 @@
 ]
 
 // --- SLIDE 5: PHASE TRANSITION SCHEMATIC ---
-#slide(title: "Phase Transition Mechanism")[
-   #align(center + horizon)[
-     #image("figures/Fig_Phase_Comparison_Schematic.png", width: auto, height: 11cm)
-   ]
-]
+// #slide(title: "Phase Transition Mechanism")[
+//    #align(center + horizon)[
+//      #image("figures/Fig_Phase_Comparison_Schematic.png", width: auto, height: 10cm)
+//    ]
+// ]
 
 // --- SLIDE 6: ELECTRONIC STRUCTURE (BANDS) ---
 #slide(title: "Electronic Structure: Band Inversion")[
@@ -112,7 +112,7 @@
     gutter: 1em,
     [
       #align(center + horizon)[
-        #image("figures/Fig_3_Bands_soc.png", width: auto, height: 11cm)
+        #image("figures/Fig_3_Bands_soc.png", width: auto, height: 10cm)
       ]
     ],
     [
@@ -133,7 +133,7 @@
     gutter: 1em,
     [
       #align(center + horizon)[
-        #image("figures/Fig_4_SpinTexture.png", width: auto, height: 11cm)
+        #image("figures/Fig_4_SpinTexture.png", width: auto, height: 9.5cm)
       ]
     ],
     [
@@ -154,7 +154,7 @@
     gutter: 1em,
     [
       #align(center + horizon)[
-        #image("figures/Fig_5_Edge_States.png", width: auto, height: 11cm)
+        #image("figures/Fig_5_Edge_States.png", width: auto, height: 10cm)
       ]
     ],
     [
@@ -175,7 +175,7 @@
     gutter: 1em,
     [
       #align(center + horizon)[
-        #image("figures/Fig_Structure_3D_1T.png", width: auto, height: 11cm)
+        #image("figures/Fig_Structure_3D_1T.png", width: auto, height: 10cm)
       ]
     ],
     [
@@ -199,7 +199,7 @@
     gutter: 1em,
     [
       #align(center + horizon)[
-        #image("figures/Fig_Structure_3D_Presentation.png", width: auto, height: 11cm)
+        #image("figures/Fig_Structure_3D_Presentation.png", width: auto, height: 10cm)
       ]
     ],
     [
