@@ -36,14 +36,10 @@ def plot_1T_3d():
     coords = []
     species = []
     
-    # Create Strip of Lattice to match 1T' flow
-    # 1T' has atoms flowing roughly along Y (and slightly X due to skew)
-    # We want a "Ribbon" that contains the Red Box and extends up/right.
-    # Red Box is at i=0, j=0 (relative to our chosen origin).
-    # so we need i around 0, and j extending -1 to +3 or so.
-    
-    nx_range = range(-1, 2) # Narrow in X (just neighbors)
-    ny_range = range(-1, 4) # Long in Y (Flow direction)
+    # Create Broad Grid and then Geometrically Filter
+    # We want a clean strip along Y.
+    nx_range = range(-4, 6)
+    ny_range = range(-4, 10)
     
     for i in nx_range:
         for j in ny_range:
@@ -63,35 +59,38 @@ def plot_1T_3d():
             species.append('Te')
             
     coords = np.array(coords)
+    species = np.array(species)
     
     # --- DEFINE RECTANGULAR CELL (Match 1T') ---
     u_rect = a1
     v_rect = a1 + 2*a2
     
-    # We need to pick a "Reference Origin" for the lattice to define the box.
-    # We want the box to be on the "central" atoms of our strip.
-    # Let's pick i=0, j=0.
+    # "Reference Origin" for the box (before shift).
+    # We pick (0,0,0) as the anchor for the Primary Cell calculation.
     ref_origin = np.array([0., 0., 0.])
     
     x_limit = np.linalg.norm(u_rect) 
     y_limit = np.linalg.norm(v_rect)
     
-    primary_indices = []
+    # Find Primary Atoms (Pre-Shift) for Alignment Calculation
+    # These are the ones inside the "Red Box" at i=0, j=0.
+    primary_mask_pre = []
     
     for idx, (x, y, z) in enumerate(coords):
-        # Relative pos
         rx = x - ref_origin[0]
         ry = y - ref_origin[1]
-        
         tol = 0.1
-        # Check geometric inclusion in the Rectangular Box at (0,0)
         if (-tol <= rx <= x_limit + tol) and (-tol <= ry <= y_limit + tol):
-            primary_indices.append(idx)
+            primary_mask_pre.append(idx)
             
     # --- COORDINATE ALIGNMENT ---
     # Calculate Centroid of these Primary Atoms
-    primary_atom_coords = coords[primary_indices]
-    current_centroid = np.mean(primary_atom_coords, axis=0)
+    primary_atom_coords = coords[primary_mask_pre]
+    if len(primary_atom_coords) == 0:
+        # Fallback if loops didn't cover (0,0) - shouldn't happen
+        current_centroid = np.mean(coords, axis=0)
+    else:
+        current_centroid = np.mean(primary_atom_coords, axis=0)
     
     # Target Centroid (from 1T' Debug)
     target_primary_centroid = np.array([1.745, 4.706, 10.16])
@@ -99,60 +98,93 @@ def plot_1T_3d():
     shift = target_primary_centroid - current_centroid
     coords += shift
     
-    # Apply shift to reference origin too (for drawing box)
+    # Apply shift to reference origin (for drawing box)
     box_origin = ref_origin + shift
     # Project box origin Z to mean Z
     box_origin[2] = np.mean(coords[:, 2])
 
     
+    # --- GEOMETRIC FILTERING (The "Ribbon" Cut) ---
+    # User wants to keep atoms along Y axis, removing clutter.
+    # 1T' Visual Bounds: X[-0.1, 5.75], Y[0.82, 12.92]
+    # We will exclude anything significantly outside this strip.
+    
+    # Filter Limits
+    x_min_f, x_max_f = -1.5, 6.0  # Slightly wider than view to avoid edge popping
+    y_min_f, y_max_f = -1.0, 14.0 # Strip along Y
+    
+    final_coords = []
+    final_species = []
+    final_is_primary = []
+    
+    # Re-evaluate logic on shifted coords
+    for idx, (x, y, z) in enumerate(coords):
+        # 1. VISIBILITY CHECK
+        if (x_min_f <= x <= x_max_f) and (y_min_f <= y <= y_max_f):
+            final_coords.append([x, y, z])
+            final_species.append(species[idx])
+            
+            # 2. PRIMARY (RED BOX) CHECK
+            # Check if this specific atom was part of our "Primary" set?
+            # Or just re-check if inside the shifted box?
+            # Re-checking shifted box is robust.
+            
+            # Position relative to shifted box origin
+            rx = x - box_origin[0]
+            ry = y - box_origin[1]
+            tol = 0.1
+            in_box = (-tol <= rx <= x_limit + tol) and (-tol <= ry <= y_limit + tol)
+            final_is_primary.append(in_box)
+            
+    final_coords = np.array(final_coords)
+    
     # --- PLOTTING ---
     
     # Plot Atoms
-    # Re-extract shifted columns for plotting
-    xs = coords[:, 0]
-    ys = coords[:, 1]
-    zs = coords[:, 2]
-    
-    for idx, (x, y, z) in enumerate(coords):
-        is_primary = (idx in primary_indices)
-
-        atom = species[idx]
-        if atom == 'W':
-            base_color = '#2c3e50'
-        else:
-            base_color = '#f39c12'
-            
-        if is_primary:
-            color = base_color
-            alpha = 1.0
-            edgecolor = 'black'
-        else:
-            if atom == 'W': color = '#bdc3c7'
-            else: color = '#fcd088'
-            alpha = 0.8
-            edgecolor = 'gray'
-            
-        size = 400 if atom == 'W' else 300
-        zorder = 10 if atom == 'W' else 9
-            
-        ax.scatter(x, y, z, s=size, c=color, edgecolors=edgecolor, alpha=1.0, zorder=zorder)
+    if len(final_coords) > 0:
+        xs = final_coords[:, 0]
+        ys = final_coords[:, 1]
+        zs = final_coords[:, 2]
         
-    # Plot Bonds
-    # 1T Coordination: Each W connected to 6 Te (3 top, 3 bottom)
-    # Cutoff distance
-    bond_cutoff = 3.0
+        for idx in range(len(final_coords)):
+            x, y, z = xs[idx], ys[idx], zs[idx]
+            atom = final_species[idx]
+            is_primary = final_is_primary[idx]
     
-    # Iterate over W atoms and find Te neighbors
-    w_indices = [k for k, s in enumerate(species) if s == 'W']
-    te_indices = [k for k, s in enumerate(species) if s == 'Te']
+            if atom == 'W':
+                base_color = '#2c3e50'
+            else:
+                base_color = '#f39c12'
+                
+            if is_primary:
+                color = base_color
+                alpha = 1.0
+                edgecolor = 'black'
+            else:
+                if atom == 'W': color = '#bdc3c7'
+                else: color = '#fcd088'
+                alpha = 0.8
+                edgecolor = 'gray'
+                
+            size = 400 if atom == 'W' else 300
+            zorder = 10 if atom == 'W' else 9
+                
+            ax.scatter(x, y, z, s=size, c=color, edgecolors=edgecolor, alpha=1.0, zorder=zorder)
+        
+    # Plot Bonds (Re-calc on visible atoms)
+    bond_cutoff = 3.2 # Slightly larger to catch bonds
+    
+    # Optimization: Only loop visible atoms
+    n_vis = len(final_coords)
+    w_indices = [k for k, s in enumerate(final_species) if s == 'W']
+    te_indices = [k for k, s in enumerate(final_species) if s == 'Te']
     
     for i in w_indices:
-        p1 = coords[i]
+        p1 = final_coords[i]
         for j in te_indices:
-            p2 = coords[j]
+            p2 = final_coords[j]
             dist = np.linalg.norm(p1 - p2)
             if dist < bond_cutoff:
-                # 1T Bonds are all identical (gray)
                 ax.plot([p1[0], p2[0]], [p1[1], p2[1]], [p1[2], p2[2]], 
                        color='gray', alpha=0.4, linewidth=2)
 
