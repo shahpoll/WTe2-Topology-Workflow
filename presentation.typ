@@ -10,7 +10,7 @@
   paper: "presentation-16-9",
   fill: bg-color,
   margin: (x: 1.0cm, y: 1.0cm),
-  numbering: "1"
+  numbering: none
 )
 #set text(
   font: "Linux Libertine",
@@ -111,14 +111,14 @@
     ],
     [
       #card[
-        *The "Parent" Structure:* \
-        - *Symmetry:* Perfect Octahedral Coordination.
-        - *Lattice:* Hexagonal / Triangular W Lattice.
+        *The "Parent" Phase:* \
+        - *Geometry:* High Symmetry ($C_(3v)$).
+        - *Feature:* Uniform W triangular lattice.
         
-        *Why it fails:*
-        - *Unstable:* High energy state.
-        - *Metallic:* No band gap.
-        - *Not Topological:* Trivial band structure.
+        *The Physics:*
+        - *Stability:* Unstable (Peierls active).
+        - *Band Order:* Normal (Trivial).
+        - *Topology:* $Z_2 = 0$ (Ordinary Metal).
       ]
     ]
   )
@@ -136,91 +136,124 @@
     ],
     [
       #card[
-        *The "Real" Structure:* \
-        - *Symmetry:* Distorted (Peierls Instability).
-        - *Action:* W atoms dimerize along one axis.
+        *The "Real" Phase:* \
+        - *Geometry:* Low Symmetry ($C_(2h)$).
+        - *Feature:* W atoms form zig-zag chains.
         
-        *The Magic:*
-        - *Stable:* Energetically favorable.
-        - *Insulating:* Gap opens ($E_g > 0$).
-        - *Topological:* Inverted Band Order ($Z_2=1$).
+        *The Physics:*
+        - *Stability:* Ground State (Relaxed).
+        - *Band Order:* Inverted (Topological).
+        - *Topology:* $Z_2 = 1$ (QSH Insulator).
       ]
     ]
   )
 ]
 
-// --- SLIDE 5: PHASE TRANSITION SCHEMATIC ---
-#slide(title: "Phase Transition Mechanism")[
-   #align(center + horizon)[
-     #image("figures/Fig_Structure_Views.png", width: auto, height: 10cm)
-   ]
+// --- SLIDE 5: PHASE TRANSITION MECHANISM ---
+#slide(title: "The Bridge: From Instability to Topology")[
+  #align(center + horizon)[
+    #stack(dir: ttb, spacing: 8pt,
+      block(
+        fill: card-bg, stroke: (left: 5pt + accent-color), inset: 10pt, radius: 5pt, width: 100%,
+        text(20pt)[
+          *The Driving Force: Peierls Instability* \
+          The metallic 1T phase is energetically expensive. The system lowers its total energy by spontaneously distorting the lattice (dimerization).
+        ]
+      ),
+      block(
+        fill: card-bg, stroke: (left: 5pt + accent-color), inset: 10pt, radius: 5pt, width: 100%,
+        text(20pt)[
+          *The Structural Response: Symmetry Breaking* \
+           $C_(3v) arrow C_(2h)$ \
+          Tungsten (W) atoms pair up to form zigzag chains. This lowers the symmetry and opens a fundamental band gap.
+        ]
+      ),
+      block(
+        fill: card-bg, stroke: (left: 5pt + accent-color), inset: 10pt, radius: 5pt, width: 100%,
+        text(20pt)[
+          *The Topological Consequence* \
+          This distortion is not trivial—it induces a *Band Inversion* between $d$ and $p$ orbitals, turning the material into a QSH Insulator ($Z_2=1$).
+        ]
+      )
+    )
+  ]
 ]
 
-// --- SLIDE 6: ELECTRONIC STRUCTURE (BANDS) ---
-#slide(title: "Electronic Structure: Band Inversion")[
+// --- SLIDE 6: SIMULATION SETUP ---
+#slide(title: "Simulation Setup: From Structure to Input")[
   #grid(
-    columns: (1.2fr, 1fr),
+    columns: (1.6fr, 1fr),
     gutter: 1em,
     [
-      #align(center + horizon)[
-        #image("figures/Fig_Bands_Presentation.png", width: auto, height: 10cm)
+      #card[
+        *The Foundation:* \
+        - *Structure:* Optimized via `vc-relax` (BFGS).
+        - *Vacuum:* $> 15 Å$ isolation for monolayer physics.
+        
+        *The Engine (QE v7.4.1):*
+        - *Functional:* PBE + Spin-Orbit Coupling (SOC).
+        - *Pseudos:* Fully Relativistic PAW (`pslibrary`).
+        
+        *Numerical Precision:*
+        - *Kinetic Cutoff:* 60 Ry (Wvfn) / 720 Ry (Rho).
+        - *K-Mesh:* $12 times 6 times 1$ (Monkhorst-Pack).
+        - *Convergence:* $10^(-8)$ Ry (SCF).
       ]
     ],
     [
-      #card[
-        *Key Features:* \
-        - *Band Inversion:* $p$-orbital bands swap parity near $Gamma$.
-        - *Spin-Orbit Coupling:* Essential for opening the gap ($E_g approx 50$ meV).
-        - *Direct Gap:* Located at $Q$ point (monolayer feature).
+      #align(center + horizon)[
+        #block(fill: card-bg, inset: 10pt, radius: 5pt)[
+          #text(16pt)[
+            ```fortran
+            &SYSTEM
+            ibrav=0, nat=6, ntyp=2,
+            ecutwfc=60, ecutrho=720,
+            lspinorb=.true.,
+            noncolin=.true.,
+            /
+            ATOMIC_SPECIES
+            W  183.84 W.rel...UPF
+            Te 127.60 Te.rel...UPF
+            K_POINTS (automatic)
+            12 6 1 0 0 0
+            ```
+          ]
+        ]
+        #v(0.5em)
+        *Real Input Snapshot*
       ]
     ]
   )
 ]
 
-// --- SLIDE 7: SPIN TEXTURE ---
-#slide(title: "Spin Texture & Berry Curvature")[
-    #grid(
-    columns: (1fr, 1fr),
-    gutter: 1em,
-    [
-      #align(center + horizon)[
-        #image("figures/Fig2_SHC_Final.png", width: auto, height: 9.5cm)
-      ]
+// --- SLIDE 6: RECIPE ---
+#slide(title: "The Recipe: A Reproducible QE Pipeline")[
+  Our pipeline automates the extraction of "Topology-Ready" Hamiltonians.
+  
+  #v(-2em) // Pull up to prevent page break
+  #grid(
+    columns: (2.5fr, 1fr), // Maximize figure space
+    gutter: 20pt,
+    align(center + horizon)[
+      #image("figures/Fig_Workflow.png", width: 100%)
     ],
     [
        #card[
-        *Spin-Momentum Locking:* \
-        - Spins are locked to momentum $k$.
-        - Signatures of topological surface states.
-        - *Result:* Suppression of backscattering.
-      ]
+         #text(16pt)[
+           *Key Ingredients:*
+           - *Engine:* Quantum ESPRESSO.
+           - *Pseudopotentials:* `pslibrary` (PAW, PBE).
+           - *Wannier90:* Spinor Projections ($p$-Te, $d$-W) + Disentanglement.
+           
+           *Goal:* \
+           Generate an accurate Tight-Binding model for Berry Curvature integration.
+         ]
+       ]
     ]
   )
 ]
 
-// --- SLIDE 8: EDGE STATES (THE EVIDENCE) ---
-#slide(title: "The Definitive Evidence: Edge States")[
-  #grid(
-    columns: (1.5fr, 1fr),
-    gutter: 1em,
-    [
-      #align(center + horizon)[
-        #image("figures/Fig_Ribbon_EdgeStates.png", width: auto, height: 10cm)
-      ]
-    ],
-    [
-      #card[
-        *Topological Protection:* \
-        - *Gapless States:* Crossing the bulk gap.
-        - *Conducting Channels:* Located physically at the edges.
-        - *Robustness:* Immune to non-magnetic disorder.
-      ]
-    ]
-  )
-]
-
-
-// --- SLIDE 3: MECHANISM ---
+// --- SLIDE 7: MECHANISM ---
 #slide(title: "The Mechanism: SOC-Driven Band Inversion")[
   #grid(
     columns: (1fr, 1fr),
@@ -241,55 +274,34 @@
   )
 ]
 
-// --- SLIDE 4: RECIPE ---
-#slide(title: "The Recipe: A Reproducible QE Pipeline")[
-  Our pipeline automates the extraction of "Topology-Ready" Hamiltonians.
-  
-  #grid(
-    columns: (2fr, 1fr),
-    gutter: 30pt,
-    align(center)[
-      #image("figures/Fig_Workflow.png", width: 100%)
-    ],
-    [
-       #card[
-         *Key Ingredients:*
-         - *Engine:* Quantum ESPRESSO (`pw.x`) v7.4.1
-         - *Pseudopotentials:* `pslibrary` v1.0.0 (PAW, Fully Relativistic PBE)
-         - *Wannier90:* Spinor Projections ($p$-Te, $d$-W) + Disentanglement
-         
-         *Goal:* \
-         Generate an accurate Tight-Binding model for Berry Curvature integration.
-       ]
-    ]
-  )
-]
-
-// --- SLIDE 5: GEOMETRIC FRAMEWORK (BZ) ---
+// --- SLIDE 7: THE ARENA (BZ) ---
 #slide(title: "The Arena: Reciprocal Space Geometry")[
-  To capture the inversion, one must traverse specific high-symmetry points.
+  // To capture the topology, we must map the Real Space distortion into Reciprocal Space.
   
   #grid(
-    columns: (1.2fr, 1fr),
-    gutter: 30pt,
-    align(center)[
-       #image("figures/Fig_BZ_Schematic.png", width: 100%)
+    columns: (1fr, 1.15fr),
+    gutter: 20pt,
+    align(center + horizon)[
+       #image("figures/Fig_BZ_Schematic.png", width: 90%)
     ],
     [
       #card[
-        *The Path:* \
-        $bold(Gamma) arrow bold(X) arrow bold(M) arrow bold(Gamma) arrow bold(Y)$
-        
-        *Significance:*
-        - The fundamental gap opens at $bold(Gamma)$.
-        - The $bold(M) arrow bold(Gamma)$ diagonal is critical for identifying background nodal lines.
-        - Rectangular BZ reflects the 1T#super[#sym.prime] anisotropy.
+        #text(18pt)[
+          *The Transformation:* \
+          The $C_{2h}$ symmetry breaking (Slide 5) transforms the parent Hexagonal BZ into a *Rectangular BZ*.
+          
+          *The Path:* \
+          $bold(Gamma) arrow bold(X) arrow bold(M) arrow bold(Gamma) arrow bold(Y)$
+          
+          *The Target:* \
+          We must focus on the $bold(Gamma)$ point, where the band inversion corresponds to the "twisted" orbital character.
+        ]
       ]
     ]
   )
 ]
 
-// --- SLIDE 6: FINGERPRINT (BAND STRUCTURE) ---
+// --- SLIDE 9: FINGERPRINT (BAND STRUCTURE) ---
 #slide(title: "The Fingerprint: Relativistic Band Inversion")[
   #grid(
     columns: (1.3fr, 1fr),
@@ -300,104 +312,118 @@
     ],
     [
       #card[
-        *Global Profile:* \
-        Semimetallic overlap observed (typical for PBE), *BUT*...
+        *The Effect of SOC:* \
+        Spin-Orbit Coupling lifts the band degeneracy. The heavy Tungsten atoms drive a massive splitting.
         
         *The Topological Signal:*
-        A clear, direct gap opens at $Gamma$.
+        A fundamental *inverted gap* opens continuously along the $Gamma-X$ direction.
       ]
-      #v(1em)
-      #figure(image("figures/Fig_PDOS_Inversion.png", width: 100%), caption: [Zoom at $Gamma$: Parity Exchange])
     ]
   )
 ]
 
-// --- SLIDE 7: COMPLICATION ---
-#slide(title: "A Complication: The Semimetallic Ground State")[
+// --- SLIDE 9: GLOBAL STRUCTURE ---
+#slide(title: "Global Electronic Structure: The Semimetallic Reality")[
+  #v(-1em)
   #grid(
-    columns: (1fr, 1fr),
-    gutter: 30pt,
-    align(center)[
-      #image("figures/Fig1_BandStructure_Final.png", width: 90%)
+    columns: (1.2fr, 1fr),
+    gutter: 20pt,
+    align(center + horizon)[
+      // Simulating a "Zoomed Landscape" crop using Typst clipping
+      #box(height: 180pt, width: 100%, clip: true)[
+        #align(left + horizon)[
+           // Focus on the Left side (Gamma -> X direction) where the overlap is
+           #image("figures/Fig_Bands_Presentation.png", width: 220%)
+        ]
+      ]
       #place(center + bottom, dy: -20%)[
-          #block(fill: rgb("#f38ba880"), inset: 10pt, radius: 5pt)[*Indirect Overlap*]
+          #block(fill: rgb("#f38ba880"), inset: 5pt, radius: 5pt)[*Indirect Overlap (Zoomed at $Gamma-X$)*]
       ]
     ],
     [
       #card[
-        *The Observation:* \
-        The Conduction Band Minimum (CBM) dips below the Valence Band Maximum (VBM) at different k-points ($Q$ vs $Gamma$).
-        
-        *The Explanation:* \
-        PBE functionals notoriously underestimate gaps.
-        
-        *The Crucial Insight:* \
-        Topology is defined by the *Inverted Direct Gap*. As long as the direct gap at $Gamma$ is non-zero and inverted, the $Z_2$ invariant is robust.
+        #text(18pt)[
+          *The Observation:* \
+          CBM dips below VBM globally ($Q$ vs $Gamma$).
+          
+          *The Cause:* \
+          Standard PBE underestimates gaps. This "Semimetallic" state is a known simulation feature of $1T'-"WTe"_2$.
+          
+          *Why Topology Survives:* \
+          $Z_2$ depends on *Local Parity Exchange*. Size of the global gap is irrelevant as long as the direct gap at $Gamma$ is inverted.
+        ]
       ]
     ]
   )
 ]
 
-// --- SLIDE 8: SHC ---
+// --- SLIDE 11: SHC ---
 #slide(title: "Definitive Evidence I: Quantized Transport")[
-  The Spin Hall Conductivity (SHC) provides a measurable order parameter.
-  
+  #v(-1em)
   #grid(
-    columns: (1.5fr, 1fr),
-    gutter: 30pt,
-    align(center)[
-      #image("figures/Fig2_SHC_Final.png", width: 100%)
+    columns: (1.3fr, 1fr),
+    gutter: 20pt,
+    align(center + horizon)[
+      #image("figures/Fig2_SHC_Final.png", width: 85%)
     ],
     [
       #card[
-        *The Observable:* \
-        $sigma_("xy")^("spin")$ calculated via Kubo-Greenwood formula.
-        
+        #text(17pt)[
+          *The Observable:* \
+          Spin Hall Conductivity ($sigma_("xy")^("spin")$).
+          
         *The Result:* \
-        A quantized plateau exists at exactly: 
+        A robust quantized plateau (~50 meV width) exists at exactly: 
         $ 2 e^2 / h $
         
         *Implication:* \
-        This quantization is the hallmark of the Quantum Spin Hall (QSH) state, protected against non-magnetic perturbations.
+        This quantization is the hallmark of the QSH state. The plateau confirms protection against non-magnetic disorder.
+        ]
       ]
     ]
   )
 ]
 
-// --- SLIDE 9: RIBBON ---
+// --- SLIDE 12: RIBBON ---
 #slide(title: "Definitive Evidence II: Visualizing Edge Highways")[
-  Bulk-Boundary Correspondence guarantees conductive states at the interface.
-  
+  #v(-2em)
   #grid(
     columns: (1.2fr, 1fr),
-    gutter: 30pt,
-    align(center)[
-      #image("figures/Fig_Ribbon_EdgeStates.png", width: 100%)
+    gutter: 20pt,
+    // Column 1: The Figure (Zoomed & Colored)
+    [
+      #align(center + horizon)[ 
+         #image("figures/Fig_Ribbon_EdgeStates.png", width: 85%)
+      ]
     ],
     [
       #card[
-        *Calculation:* \
-        Wannier Hamiltonian projected onto a 30-unit-cell finite slab.
-        
-        *Observation:* \
-        Helical edge states (Red) traverse the bulk gap, connecting valence and conduction bands.
-        
-        *Verdict:* \
-        Odd number of crossings $arrow Z_2 = 1$.
+        #text(17pt)[
+          *Calculation:* \
+          Wannier Hamiltonian (Finite Slab Projection).
+          
+          *Observation:* \
+          Two distinct *Helical Edge States* traverse the bulk gap using opposite spin channels ($arrow.t k_x$ vs $arrow.b -k_x$).
+          
+          *The Connection:* \
+          These are the "wires" that carry the quantized current seen in the previous slide ($2 e^2/h$).
+        ]
       ]
     ]
   )
 ]
 
-// --- SLIDE 10: EFFICIENCY ---
+// --- SLIDE 13: EFFICIENCY ---
+// --- SLIDE 13: EFFICIENCY ---
 #slide(title: "The Efficiency: Accelerated Discovery")[
+  #v(-1em)
   Topological workflows are computationally expensive. We benchmarked the feasibility.
   
   #grid(
     columns: (1fr, 1fr),
     gutter: 30pt,
-    align(center)[
-       #image("figures/Fig_Feasibility_Time.png", width: 90%)
+    align(center + horizon)[
+       #image("figures/Fig_Feasibility_Time.png", width: 85%)
     ],
     [
       #card[
@@ -411,32 +437,54 @@
   )
 ]
 
-// --- SLIDE 11: VERDICT ---
+// --- SLIDE 14: VERDICT ---
 #slide(title: "The Verdict: Unambiguous QSH Insulator")[
   Our "Recipe" successfully characterizes 1T#super[#sym.prime]-WTe#sub[2].
   
+  #v(-1em) // Move compaction here to avoid overlapping the header line
   #grid(
-    columns: (1fr, 1fr),
+    columns: (1.1fr, 0.9fr), // Give text slightly more space
     gutter: 20pt,
+    // Column 1: Text Summary (Centered Vertically)
     [
-      #card[
-        *Summary of Evidences:*
-        1. *Orbital:* $d-p$ Band Inversion confirmed.
-        2. *Topology:* $Z_2=1$ via Edge States and SHC.
-        3. *Robustness:* Wannier spreads $< 30 Å^2$.
-        
-        *Final Conclusion:* \
-        1T'-WTe#sub[2] is a robust Quantum Spin Hall Insulator suitable for room-temperature spintronics.
+      #align(center + horizon)[
+        #card[
+          #text(17pt)[
+            *Summary of Evidences:*
+            1. *Orbital:* $d-p$ Band Inversion confirmed.
+            2. *Topology:* $Z_2=1$ via Edge States and SHC.
+            3. *Robustness:* Wannier spreads $< 30 Å^2$.
+            
+            *Final Conclusion:* \
+            1T'-WTe#sub[2] is a robust Quantum Spin Hall Insulator suitable for room-temperature spintronics.
+          ]
+        ]
       ]
     ],
     align(center + horizon)[
-      #image("figures/Fig_Repo_QR_Branded.png", width: 60%)
-      #v(1em)
-      *Code & Data:* \
-      #text(16pt)[github.com/shahpoll/Quantum-ESPRESSO-WTe2-Topology]
-      #v(0.5em)
-      *Release:* \
-      #text(16pt)[`v1.0-ICAP2025` (Verified Artifact)]
+      // Shift right column UP as requested to fix overflow
+      #move(dy: -2em)[
+        #image("figures/Fig_Repo_QR_Branded.png", width: 50%)
+        #v(0.2em)
+        *Code & Data:* \
+        #text(15pt)[github.com/shahpoll/QE-WTe2-Topology]
+        #v(0.1em)
+        *Release:* \
+        #text(15pt)[`v1.0-ICAP2025` (Verified Artifact)]
+      ]
     ]
   )
+]
+
+// --- SLIDE 16: THANK YOU ---
+#slide(title: none)[
+  #align(center + horizon)[
+    #text(40pt, weight: "bold", fill: accent-color)[Thank You!]
+    #v(1em)
+    #text(24pt, fill: text-color)[Questions & Discussion]
+    #v(2em)
+    #image("figures/Fig_Repo_QR_Branded.png", width: 25%)
+    #v(0.5em)
+    #text(16pt, fill: secondary-color)[github.com/shahpoll/QE-WTe2-Topology]
+  ]
 ]

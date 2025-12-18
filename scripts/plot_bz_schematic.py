@@ -55,7 +55,7 @@ def plot_bz():
         dx = end[0] - start[0]
         dy = end[1] - start[1]
         plt.arrow(mx - dx*0.1, my - dy*0.1, dx*0.001, dy*0.001, 
-                  shape='full', lw=0, length_includes_head=True, head_width=0.04, color='#D50032', zorder=5)
+                  shape='full', lw=0, length_includes_head=True, head_width=0.03, head_length=0.04, fc='#D50032', ec='#D50032', zorder=5)
 
     # Segments: Gamma->X, X->M, M->Gamma, Gamma->Y
     add_path_arrow((0,0), (0.5,0))          # Gamma -> X

@@ -88,32 +88,33 @@ for k_linear in k_vals:
 bands = np.array(bands)
 
 # --- PLOTTING ---
-plt.figure(figsize=(6, 8))
+# Using landscape-ish or square-ish figure but focused
+plt.figure(figsize=(6, 6))
 
-# --- NEW HIGH-CONTRAST LOOP ---
-# 1. Plot ALL bands as thin, light grey background
+# --- PLOTTING LOGIC ---
+# 1. Plot ALL bands as "Bulk Continuum"
+# User requested: "dimmed black lines arent much visible, swap it with other colours"
+# We use a nice visible blue/slate color
 for b in range(bands.shape[1]):
-    plt.plot(k_vals, bands[:, b], color='grey', alpha=0.1, linewidth=0.5, zorder=1)
+    plt.plot(k_vals, bands[:, b], color='#4682B4', alpha=0.3, linewidth=1.0, zorder=1) # SteelBlue
 
-# 2. Identify and highlight Edge States
-# Heuristic: Find bands that cross zero within the central range of k
+# 2. Identify and highlight Edge States (Red)
+# Heuristic: Crosses zero gap
 mid_k_idx = NK // 2
 for b in range(bands.shape[1]):
     band_vals = bands[:, b]
-    # Check if band crosses zero near the center k-point
     if min(band_vals) < 0 < max(band_vals):
-        # Check if it's near the gap center at k=0.5
-        if abs(band_vals[mid_k_idx]) < 0.1: 
-            plt.plot(k_vals, band_vals, color='#D50032', alpha=0.8, linewidth=1.5, zorder=2)
+        if abs(band_vals[mid_k_idx]) < 0.15: 
+            plt.plot(k_vals, band_vals, color='#D50032', alpha=0.9, linewidth=2.5, zorder=2)
 
-# Formatting
-plt.ylim(-0.5, 0.5)
-plt.xlim(0, 1)
-plt.axhline(0, color='red', linestyle=':', linewidth=1)
+# Formatting - FOCUSED ZOOM
+plt.ylim(-0.3, 0.3)
+plt.xlim(0.2, 0.8) # Focus heavily on the crossing point (usually 0.5)
+plt.axhline(0, color='black', linestyle=':', linewidth=1)
 plt.xlabel(r"$k_{x}$ (Periodic Direction)")
 plt.ylabel("Energy (eV)")
-plt.title(f"Ribbon Edge States (Width={WIDTH} cells)")
-plt.text(0.5, 0.35, "Topological Edge States", color='blue', ha='center', fontweight='bold')
+plt.title(f"Topological Edge States (Zoomed)")
 
+plt.tight_layout()
 plt.savefig("Fig_Ribbon_EdgeStates.png", dpi=300)
-print("Ribbon calculation complete.")
+print("Ribbon calculation complete (Standard Colors, Zoomed).")

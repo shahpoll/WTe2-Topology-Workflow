@@ -58,8 +58,8 @@ if e_w is not None:
 
 if e_te is not None:
     ef = -2.8364
-    ax.plot(e_te - ef, dos_te, color='orange', label='Te $5p$', linewidth=2)
-    ax.fill_between(e_te - ef, 0, dos_te, color='orange', alpha=0.1)
+    ax.plot(e_te - ef, dos_te, color='green', label='Te $5p$', linewidth=2)
+    ax.fill_between(e_te - ef, 0, dos_te, color='green', alpha=0.1)
 
 ax.set_xlim(-2, 2) # Zoom on inversion
 ax.set_ylim(0, max(max(dos_w), max(dos_te)) * 1.1)
@@ -69,8 +69,8 @@ ax.set_xlabel(r"Energy ($E - E_F$) [eV]")
 ax.set_ylabel("Density of States [states/eV]")
 ax.set_title("Orbital Inversion (Band Crossing)")
 ax.legend()
-ax.text(-1.5, 1, "Valence (Te-p)", color='orange', fontweight='bold')
-ax.text(0.5, 1, "Conduction (W-d)", color='blue', fontweight='bold')
+ax.text(-1.5, 1, "Valence (Te-p)", color='green', fontweight='bold', fontsize=16)
+ax.text(0.5, 1, "Conduction (W-d)", color='blue', fontweight='bold', fontsize=16)
 
 plt.tight_layout()
 plt.savefig("Fig_PDOS_Inversion.png", dpi=300)

@@ -34,7 +34,7 @@ atoms = parse_geometry('wte2.scf.in')
 # Lattice vectors (Orthorhombic approx for plotting)
 lat_a, lat_b, lat_c = 3.49, 6.33, 20.0
 
-fig = plt.figure(figsize=(10, 5))
+fig = plt.figure(figsize=(8, 4)) # Reduced size from (10,5)
 
 # --- SUBPLOT 1: TOP VIEW ---
 ax1 = fig.add_subplot(1, 2, 1, projection='3d')
@@ -48,7 +48,7 @@ for atom in atoms:
                        c=color, s=size, edgecolors='black', alpha=0.9)
 
 ax1.view_init(elev=90, azim=-90) # Top View
-ax1.set_title("Top View (Zigzag W Chains)")
+ax1.set_title("Top View (Zigzag W Chains)", y=-0.1) # Lowered title
 ax1.set_xlabel("a (Å)")
 ax1.set_ylabel("b (Å)")
 ax1.set_zticks([]) # Hide Z axis for 2D feel
@@ -62,10 +62,11 @@ for atom in atoms:
                c=color, s=size, edgecolors='black')
 
 ax2.view_init(elev=0, azim=0) # Side View
-ax2.set_title(f"Side View (Vacuum ~ {lat_c*0.8:.1f} Å)")
+ax2.set_title(f"Side View (Vacuum ~ {lat_c*0.8:.1f} Å)", y=-0.1) # Lowered title
 ax2.set_zlabel("c (Å)")
 ax2.set_yticks([])
 
+plt.subplots_adjust(wspace=0.0) # Bring plots closer
 plt.tight_layout()
 plt.savefig("Fig_Structure_Views.png", dpi=300)
 print("Structure plot generated: Fig_Structure_Views.png")
