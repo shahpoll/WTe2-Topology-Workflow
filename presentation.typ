@@ -152,7 +152,7 @@
 // --- SLIDE 5: PHASE TRANSITION SCHEMATIC ---
 #slide(title: "Phase Transition Mechanism")[
    #align(center + horizon)[
-     #image("figures/Fig_Phase_Comparison_Schematic.png", width: auto, height: 10cm)
+     #image("figures/Fig_Structure_Views.png", width: auto, height: 10cm)
    ]
 ]
 
@@ -184,7 +184,7 @@
     gutter: 1em,
     [
       #align(center + horizon)[
-        #image("figures/Fig_4_SpinTexture.png", width: auto, height: 9.5cm)
+        #image("figures/Fig2_SHC_Final.png", width: auto, height: 9.5cm)
       ]
     ],
     [
