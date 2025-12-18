@@ -9,7 +9,8 @@
 #set page(
   paper: "presentation-16-9",
   fill: bg-color,
-  margin: (x: 1.0cm, y: 1.0cm)
+  margin: (x: 1.0cm, y: 1.0cm),
+  numbering: "1"
 )
 #set text(
   font: "Linux Libertine",
@@ -149,11 +150,11 @@
 ]
 
 // --- SLIDE 5: PHASE TRANSITION SCHEMATIC ---
-// #slide(title: "Phase Transition Mechanism")[
-//    #align(center + horizon)[
-//      #image("figures/Fig_Phase_Comparison_Schematic.png", width: auto, height: 10cm)
-//    ]
-// ]
+#slide(title: "Phase Transition Mechanism")[
+   #align(center + horizon)[
+     #image("figures/Fig_Phase_Comparison_Schematic.png", width: auto, height: 10cm)
+   ]
+]
 
 // --- SLIDE 6: ELECTRONIC STRUCTURE (BANDS) ---
 #slide(title: "Electronic Structure: Band Inversion")[
@@ -177,25 +178,25 @@
 ]
 
 // --- SLIDE 7: SPIN TEXTURE ---
-// #slide(title: "Spin Texture & Berry Curvature")[
-//     #grid(
-//     columns: (1fr, 1fr),
-//     gutter: 1em,
-//     [
-//       #align(center + horizon)[
-//         #image("figures/Fig_4_SpinTexture.png", width: auto, height: 9.5cm)
-//       ]
-//     ],
-//     [
-//        #card[
-//         *Spin-Momentum Locking:* \
-//         - Spins are locked to momentum $k$.
-//         - Signatures of topological surface states.
-//         - *Result:* Suppression of backscattering.
-//       ]
-//     ]
-//   )
-// ]
+#slide(title: "Spin Texture & Berry Curvature")[
+    #grid(
+    columns: (1fr, 1fr),
+    gutter: 1em,
+    [
+      #align(center + horizon)[
+        #image("figures/Fig_4_SpinTexture.png", width: auto, height: 9.5cm)
+      ]
+    ],
+    [
+       #card[
+        *Spin-Momentum Locking:* \
+        - Spins are locked to momentum $k$.
+        - Signatures of topological surface states.
+        - *Result:* Suppression of backscattering.
+      ]
+    ]
+  )
+]
 
 // --- SLIDE 8: EDGE STATES (THE EVIDENCE) ---
 #slide(title: "The Definitive Evidence: Edge States")[
