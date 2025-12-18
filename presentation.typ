@@ -99,7 +99,7 @@
 ]
 
 // --- SLIDE 3: 1T PHASE (IDEAL) ---
-#slide(title: "Crystal Structure: The Ideal $1T$ Phase")[
+#slide(title: [Crystal Structure: The Ideal $1T$ Phase])[
   #grid(
     columns: (1.2fr, 1fr),
     gutter: 1em,
@@ -123,7 +123,7 @@
   )
 ]
 
-#slide(title: "Crystal Structure: The Distorted $1T#super[#sym.prime]$ Phase")[
+#slide(title: [Crystal Structure: The Distorted $1T#super[#sym.prime]$ Phase])[
   #grid(
     columns: (1.2fr, 1fr),
     gutter: 1em,
@@ -218,7 +218,7 @@
 ]
 
 // --- SLIDE 3: 1T PHASE (IDEAL) ---
-#slide(title: "Crystal Structure: The Ideal $1T$ Phase")[
+#slide(title: [Crystal Structure: The Ideal $1T$ Phase])[
   #grid(
     columns: (1.2fr, 1fr),
     gutter: 1em,
@@ -242,7 +242,7 @@
   )
 ]
 
-#slide(title: "Crystal Structure: The Distorted $1T#super[#sym.prime]$ Phase")[
+#slide(title: [Crystal Structure: The Distorted $1T#super[#sym.prime]$ Phase])[
   #grid(
     columns: (1.2fr, 1fr),
     gutter: 1em,
